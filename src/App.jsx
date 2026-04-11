@@ -1,3 +1,5 @@
+import { useState } from 'react'
+import VideoIntro from './components/VideoIntro'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import FurnitureShowcase from './components/FurnitureShowcase'
@@ -14,8 +16,11 @@ import CTA from './components/CTA'
 import Footer from './components/Footer'
 
 export default function App() {
+  const [introVisible, setIntroVisible] = useState(true)
+
   return (
     <div className="min-h-screen bg-[#0a0a0f] overflow-x-hidden">
+      <VideoIntro onEnter={() => setIntroVisible(false)} />
       <Navbar />
       <main>
         {/* 1. Hero — first impression */}
