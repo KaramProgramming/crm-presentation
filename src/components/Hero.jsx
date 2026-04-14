@@ -1,277 +1,324 @@
 import { useRef } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
-import { ArrowRight, Play, TrendingUp, Users, Package } from 'lucide-react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useGSAP } from '@gsap/react'
+import { ArrowRight, TrendingUp, Users, Package } from 'lucide-react'
 
-const floatingCards = [
-  {
-    id: 1,
-    icon: <TrendingUp size={18} className="text-brand-400" />,
-    title: 'Monthly Revenue',
-    value: '+34%',
-    sub: 'vs previous month',
-    color: 'from-brand-600/20 to-purple-600/10',
-  },
-  {
-    id: 2,
-    icon: <Users size={18} className="text-emerald-400" />,
-    title: 'New Customers',
-    value: '128',
-    sub: 'this quarter',
-    color: 'from-emerald-600/20 to-teal-600/10',
-  },
-  {
-    id: 3,
-    icon: <Package size={18} className="text-accent-400" />,
-    title: 'Active Projects',
-    value: '47',
-    sub: 'currently in progress',
-    color: 'from-orange-600/20 to-red-600/10',
-  },
+gsap.registerPlugin(ScrollTrigger)
+
+function MagneticBtn({ children, href, className }) {
+  const wrapRef = useRef(null)
+  const innerRef = useRef(null)
+
+  const onMove = (event) => {
+    const { left, top, width, height } = wrapRef.current.getBoundingClientRect()
+    const x = (event.clientX - left - width / 2) * 0.22
+    const y = (event.clientY - top - height / 2) * 0.22
+    gsap.to(innerRef.current, { x, y, duration: 0.45, ease: 'power2.out' })
+  }
+
+  const onLeave = () => {
+    gsap.to(innerRef.current, { x: 0, y: 0, duration: 0.85, ease: 'elastic.out(1, 0.4)' })
+  }
+
+  return (
+    <div ref={wrapRef} onMouseMove={onMove} onMouseLeave={onLeave} className="inline-block">
+      <a ref={innerRef} href={href} className={className}>
+        {children}
+      </a>
+    </div>
+  )
+}
+
+function SplitWords({ text }) {
+  const words = text.split(' ')
+
+  return (
+    <>
+      {words.map((word, index) => (
+        <span key={index} className="reveal-wrapper mr-[0.25em]">
+          <span className="reveal-word">{word}</span>
+        </span>
+      ))}
+    </>
+  )
+}
+
+const metricCards = [
+  { icon: TrendingUp, label: 'Monthly Revenue', value: '+34%', sub: 'vs previous month', color: '#818cf8' },
+  { icon: Users, label: 'New Customers', value: '128', sub: 'this quarter', color: '#34d399' },
+  { icon: Package, label: 'Active Projects', value: '47', sub: 'in progress', color: '#fb923c' },
 ]
 
 export default function Hero() {
   const sectionRef = useRef(null)
-  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] })
-  const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '20%'])
-  const bgScale = useTransform(scrollYProgress, [0, 1], [1.05, 1.12])
+  const bgRef = useRef(null)
+  const badgeRef = useRef(null)
+  const h1Ref = useRef(null)
+  const subRef = useRef(null)
+  const ctaRef = useRef(null)
+  const proofRef = useRef(null)
+  const cardRef = useRef(null)
+
+  useGSAP(() => {
+    const metricCardEls = sectionRef.current.querySelectorAll('.metric-card')
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: 'top 70%',
+        once: true,
+      },
+    })
+
+    tl.fromTo(
+      badgeRef.current,
+      { y: 24, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.75, ease: 'power3.out' }
+    )
+      .fromTo(
+        h1Ref.current.querySelectorAll('.reveal-word'),
+        { y: 90, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.85, stagger: 0.045, ease: 'power3.out' },
+        '-=0.35'
+      )
+      .fromTo(
+        subRef.current,
+        { y: 22, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.65, ease: 'power2.out' },
+        '-=0.35'
+      )
+      .fromTo(
+        ctaRef.current,
+        { y: 18, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.65, ease: 'power2.out' },
+        '-=0.25'
+      )
+      .fromTo(
+        proofRef.current,
+        { y: 14, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.5, ease: 'power2.out' },
+        '-=0.15'
+      )
+      .fromTo(
+        cardRef.current,
+        { x: 70, opacity: 0, scale: 0.96 },
+        { x: 0, opacity: 1, scale: 1, duration: 1.1, ease: 'expo.out' },
+        '-=1.0'
+      )
+      .fromTo(
+        metricCardEls,
+        { x: 50, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.7, stagger: 0.12, ease: 'power3.out' },
+        '-=0.7'
+      )
+
+    ScrollTrigger.create({
+      trigger: sectionRef.current,
+      start: 'top top',
+      end: 'bottom top',
+      onUpdate: (self) => {
+        gsap.set(bgRef.current, { y: self.progress * 130, ease: 'none' })
+      },
+    })
+
+    gsap.to(metricCardEls, {
+      y: -8,
+      duration: 3.2,
+      ease: 'power1.inOut',
+      yoyo: true,
+      repeat: -1,
+      stagger: { each: 0.9, from: 'start' },
+    })
+  }, { scope: sectionRef })
 
   return (
-    <section ref={sectionRef} className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
-
-      {/* === LUXURY FURNITURE BACKGROUND === */}
-      {/* Full bleed photo with parallax */}
-      <motion.div
-        style={{ y: bgY, scale: bgScale }}
-        className="absolute inset-0 pointer-events-none"
-      >
+    <section
+      ref={sectionRef}
+      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16"
+    >
+      <div ref={bgRef} className="absolute inset-0 will-change-transform pointer-events-none scale-[1.12]">
         <img
           src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1920&q=80"
           alt=""
           className="w-full h-full object-cover"
         />
-      </motion.div>
+      </div>
 
-      {/* Luxury dark overlay — only enough to make text readable, keep photo visible */}
-      <div className="absolute inset-0 bg-[#0a0a0f]/55 pointer-events-none" />
-
-      {/* Left vignette — darkens the text side for contrast */}
-      <div className="absolute inset-0 pointer-events-none"
-        style={{ background: 'linear-gradient(90deg, rgba(10,10,15,0.75) 0%, rgba(10,10,15,0.3) 50%, rgba(10,10,15,0.15) 100%)' }}
-      />
-
-      {/* Bottom fade into next section */}
-      <div className="absolute bottom-0 left-0 right-0 h-48 pointer-events-none"
-        style={{ background: 'linear-gradient(to bottom, transparent, #0a0a0f)' }}
-      />
-
-      {/* Top fade */}
-      <div className="absolute top-0 left-0 right-0 h-32 pointer-events-none"
-        style={{ background: 'linear-gradient(to bottom, #0a0a0f, transparent)' }}
-      />
-
-      {/* Subtle brand color tint over the photo */}
-      <div className="absolute inset-0 bg-brand-950/25 mix-blend-multiply pointer-events-none" />
-
-      {/* Animated grid — very subtle on top of photo */}
+      <div className="absolute inset-0 bg-[#07070b]/60" />
       <div
-        className="absolute inset-0 opacity-[0.06] pointer-events-none"
+        className="absolute inset-0"
+        style={{ background: 'linear-gradient(95deg, rgba(7,7,11,0.88) 0%, rgba(7,7,11,0.5) 52%, rgba(7,7,11,0.12) 100%)' }}
+      />
+      <div className="absolute inset-x-0 bottom-0 h-56" style={{ background: 'linear-gradient(to top, #07070b, transparent)' }} />
+      <div className="absolute inset-x-0 top-0 h-28" style={{ background: 'linear-gradient(to bottom, #07070b, transparent)' }} />
+
+      <div
+        className="absolute inset-0 pointer-events-none opacity-[0.045]"
         style={{
-          backgroundImage:
-            'linear-gradient(rgba(99,102,241,1) 1px, transparent 1px), linear-gradient(90deg, rgba(99,102,241,1) 1px, transparent 1px)',
-          backgroundSize: '60px 60px',
+          backgroundImage: 'linear-gradient(rgba(99,102,241,1) 1px, transparent 1px), linear-gradient(90deg, rgba(99,102,241,1) 1px, transparent 1px)',
+          backgroundSize: '64px 64px',
         }}
       />
 
-      {/* Glowing orbs — reinforce the mood */}
-      <div className="absolute top-1/4 left-1/3 w-80 h-80 bg-brand-600/25 rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute bottom-1/3 right-1/4 w-72 h-72 bg-purple-600/20 rounded-full blur-[90px] pointer-events-none" />
+      <div className="absolute top-1/3 left-1/3 h-96 w-96 rounded-full bg-indigo-600/18 blur-[130px] pointer-events-none" />
+      <div className="absolute bottom-1/3 right-1/4 h-80 w-80 rounded-full bg-purple-600/12 blur-[110px] pointer-events-none" />
 
-      {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 py-24 grid lg:grid-cols-2 gap-16 items-center">
-
-        {/* Left — Text */}
-        <div className="text-left">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-600/10 border border-brand-500/20 text-brand-300 text-sm font-medium mb-8"
+      <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-16 px-6 py-24 md:px-10 lg:grid-cols-[1fr_380px]">
+        <div>
+          <div
+            ref={badgeRef}
+            className="mb-8 inline-flex items-center gap-2 rounded-full border border-indigo-500/20 bg-indigo-600/10 px-4 py-2 text-sm font-medium text-indigo-300"
+            style={{ opacity: 0 }}
           >
-            <span className="w-2 h-2 rounded-full bg-brand-400 animate-pulse" />
-            CRM Software Built for Furniture Companies
-          </motion.div>
+            <span className="h-2 w-2 rounded-full bg-indigo-400 animate-pulse" />
+            CRM Built for Furniture Companies
+          </div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-5xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[1.05] mb-6"
+          <h1
+            ref={h1Ref}
+            className="mb-7 text-5xl font-black leading-[1.04] tracking-tight md:text-6xl lg:text-[76px]"
           >
-            The CRM that{' '}
-            <span className="text-gradient">understands</span>
+            <SplitWords text="The CRM that" />
             <br />
-            your{' '}
-            <span className="text-gradient">furniture</span>{' '}
-            business
-          </motion.h1>
+            <span className="reveal-wrapper mr-[0.25em]">
+              <span className="reveal-word text-gradient">understands</span>
+            </span>
+            <br />
+            <SplitWords text="your furniture" />
+            <span className="reveal-wrapper">
+              <span className="reveal-word"> business</span>
+            </span>
+          </h1>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.35 }}
-            className="text-lg md:text-xl text-white/55 leading-relaxed mb-10 max-w-xl"
+          <p
+            ref={subRef}
+            className="mb-10 max-w-[520px] text-lg leading-relaxed text-white/50 md:text-xl"
+            style={{ opacity: 0 }}
           >
-            Manage customers, orders, projects and analytics in one platform
-            designed exclusively for furniture and interior design companies.
-          </motion.p>
+            Manage customers, orders, projects and analytics in one platform designed
+            exclusively for furniture and interior design companies.
+          </p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            className="flex flex-col sm:flex-row gap-4"
-          >
-            <motion.a
-              href="#cta"
-              whileHover={{ scale: 1.03, y: -1 }}
-              whileTap={{ scale: 0.97 }}
-              className="group inline-flex items-center justify-center gap-2 px-8 py-4 bg-brand-600 hover:bg-brand-500 text-white font-bold rounded-2xl shadow-2xl shadow-brand-900/50 transition-all duration-200"
-            >
+          <div ref={ctaRef} className="flex flex-col gap-4 sm:flex-row" style={{ opacity: 0 }}>
+            <MagneticBtn href="#cta" className="btn-primary">
               Request a Free Demo
-              <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-            </motion.a>
+              <ArrowRight size={17} className="transition-transform duration-200 group-hover:translate-x-1" />
+            </MagneticBtn>
 
-            <motion.a
-              href="#features"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-white font-semibold rounded-2xl transition-all duration-200"
-            >
-              <Play size={16} className="text-brand-400" />
-              Explore features
-            </motion.a>
-          </motion.div>
+            <a href="#features" className="btn-secondary">
+              Explore Features
+            </a>
+          </div>
 
-          {/* Social proof */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.75 }}
-            className="mt-12 flex items-center gap-6"
-          >
-            <div className="flex -space-x-2">
-              {['A', 'B', 'C', 'D'].map((l, i) => (
+          <div ref={proofRef} className="mt-12 flex items-center gap-6" style={{ opacity: 0 }}>
+            <div className="flex -space-x-2.5">
+              {['A', 'B', 'C', 'D'].map((letter, index) => (
                 <div
-                  key={i}
-                  className="w-9 h-9 rounded-full border-2 border-[#0a0a0f] flex items-center justify-center text-xs font-bold"
-                  style={{ background: `hsl(${220 + i * 30}, 70%, 50%)` }}
+                  key={index}
+                  className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-[#07070b] text-xs font-bold text-white"
+                  style={{ background: `hsl(${215 + index * 35}, 70%, 52%)` }}
                 >
-                  {l}
+                  {letter}
                 </div>
               ))}
             </div>
             <div>
-              <div className="flex text-yellow-400 text-sm">{'★'.repeat(5)}</div>
-              <p className="text-white/50 text-sm mt-0.5">
-                Already used by leading furniture companies
-              </p>
+              <div className="text-sm tracking-wide text-yellow-400">5.0 / 5</div>
+              <p className="mt-0.5 text-sm text-white/38">Used by leading furniture companies</p>
             </div>
-          </motion.div>
+          </div>
         </div>
 
-        {/* Right — Floating dashboard cards */}
-        <div className="hidden lg:flex flex-col gap-4 relative">
-          {/* Main dashboard preview card */}
-          <motion.div
-            initial={{ opacity: 0, x: 40, y: 20 }}
-            animate={{ opacity: 1, x: 0, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="bg-glass rounded-2xl p-6 border border-white/10 shadow-2xl card-shine"
+        <div className="hidden flex-col gap-3 lg:flex">
+          <div
+            ref={cardRef}
+            className="glass shine overflow-hidden rounded-2xl border border-white/8 shadow-2xl"
+            style={{ opacity: 0, boxShadow: '0 32px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.05)' }}
           >
-            {/* Fake top bar */}
-            <div className="flex items-center gap-2 mb-5">
+            <div className="flex items-center gap-2 border-b border-white/[0.06] bg-white/[0.025] px-4 py-3">
               <div className="flex gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
-                <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
-                <span className="w-2.5 h-2.5 rounded-full bg-green-500/80" />
+                <span className="h-3 w-3 rounded-full bg-red-500/65" />
+                <span className="h-3 w-3 rounded-full bg-yellow-500/65" />
+                <span className="h-3 w-3 rounded-full bg-green-500/65" />
               </div>
-              <div className="ml-2 flex-1 h-5 bg-white/5 rounded-md text-white/30 text-xs flex items-center px-2">
-                furnicrm.app/dashboard
+              <div className="ml-2 flex h-5 flex-1 items-center rounded-md bg-white/[0.045] px-2.5">
+                <span className="font-mono text-xs text-white/28">furnicrm.app/dashboard</span>
               </div>
             </div>
 
-            <p className="text-white/40 text-xs uppercase tracking-widest font-semibold mb-3">
-              Dashboard Overview
-            </p>
+            <div className="space-y-3 p-4">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-white/28">Dashboard Overview</p>
 
-            {/* Stat row */}
-            <div className="grid grid-cols-3 gap-3 mb-5">
-              {[
-                { label: 'Active Clients', value: '1,284', delta: '+12%' },
-                { label: 'Open Deals', value: '€ 94K', delta: '+8%' },
-                { label: 'Open Orders', value: '36', delta: '+5%' },
-              ].map((s) => (
-                <div key={s.label} className="bg-white/5 rounded-xl p-3">
-                  <p className="text-white/40 text-xs mb-1">{s.label}</p>
-                  <p className="text-white font-bold text-base">{s.value}</p>
-                  <p className="text-emerald-400 text-xs font-semibold mt-0.5">{s.delta}</p>
-                </div>
-              ))}
-            </div>
+              <div className="grid grid-cols-3 gap-2">
+                {[
+                  { label: 'Active Clients', value: '1,284', delta: '+12%' },
+                  { label: 'Open Deals', value: 'EUR94K', delta: '+8%' },
+                  { label: 'Open Orders', value: '36', delta: '+5%' },
+                ].map((stat) => (
+                  <div key={stat.label} className="rounded-xl border border-white/[0.06] bg-white/[0.04] p-2.5">
+                    <p className="mb-1 text-[10px] text-white/30">{stat.label}</p>
+                    <p className="text-sm font-black text-white">{stat.value}</p>
+                    <p className="text-[10px] font-bold text-emerald-400">{stat.delta}</p>
+                  </div>
+                ))}
+              </div>
 
-            {/* Fake bar chart */}
-            <div className="bg-white/3 rounded-xl p-4">
-              <p className="text-white/40 text-xs mb-3">Revenue — Last 6 months</p>
-              <div className="flex items-end gap-2 h-16">
-                {[40, 65, 55, 75, 60, 90].map((h, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ height: 0 }}
-                    animate={{ height: `${h}%` }}
-                    transition={{ duration: 0.6, delay: 0.8 + i * 0.07, ease: 'easeOut' }}
-                    className="flex-1 rounded-t-md"
-                    style={{
-                      background:
-                        i === 5
+              <div className="rounded-xl border border-white/[0.04] bg-white/[0.025] p-3">
+                <p className="mb-2.5 text-[10px] text-white/28">Revenue - Last 6 months</p>
+                <div className="flex h-11 items-end gap-1.5">
+                  {[38, 62, 50, 72, 57, 88].map((height, index) => (
+                    <div
+                      key={index}
+                      className="flex-1 rounded-t-sm"
+                      style={{
+                        height: `${height}%`,
+                        background: index === 5
                           ? 'linear-gradient(to top, #4f46e5, #818cf8)'
-                          : 'rgba(99,102,241,0.3)',
-                    }}
-                  />
-                ))}
-              </div>
-              <div className="flex justify-between mt-2">
-                {['Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr'].map((m) => (
-                  <span key={m} className="text-white/25 text-xs">{m}</span>
-                ))}
+                          : 'rgba(99,102,241,0.18)',
+                      }}
+                    />
+                  ))}
+                </div>
+                <div className="mt-1.5 flex justify-between">
+                  {['Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr'].map((month) => (
+                    <span key={month} className="text-[9px] text-white/22">{month}</span>
+                  ))}
+                </div>
               </div>
             </div>
-          </motion.div>
+          </div>
 
-          {/* Floating metric cards */}
-          {floatingCards.map((card, i) => (
-            <motion.div
-              key={card.id}
-              initial={{ opacity: 0, x: 60, y: 20 }}
-              animate={{ opacity: 1, x: 0, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.7 + i * 0.15, ease: [0.22, 1, 0.36, 1] }}
-              whileHover={{ y: -3, scale: 1.02 }}
-              className="bg-glass bg-glass-hover rounded-xl p-4 border border-white/10 flex items-center gap-4 cursor-default card-shine"
-            >
-              <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${card.color} flex items-center justify-center border border-white/10`}>
-                {card.icon}
+          {metricCards.map((card) => {
+            const Icon = card.icon
+
+            return (
+              <div
+                key={card.label}
+                className="metric-card glass glass-hover shine flex cursor-default items-center gap-3.5 rounded-xl border border-white/[0.07] p-4"
+                style={{ opacity: 0 }}
+              >
+                <div
+                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl"
+                  style={{ background: `${card.color}15`, border: `1px solid ${card.color}25` }}
+                >
+                  <Icon size={16} style={{ color: card.color }} />
+                </div>
+                <div>
+                  <p className="text-xs text-white/38">{card.label}</p>
+                  <p className="text-lg font-black leading-tight text-white">{card.value}</p>
+                  <p className="text-xs text-white/28">{card.sub}</p>
+                </div>
               </div>
-              <div>
-                <p className="text-white/50 text-xs">{card.title}</p>
-                <p className="text-white font-bold text-lg leading-tight">{card.value}</p>
-                <p className="text-white/35 text-xs">{card.sub}</p>
-              </div>
-            </motion.div>
-          ))}
+            )
+          })}
         </div>
       </div>
 
-      {/* Bottom fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#0a0a0f] to-transparent pointer-events-none" />
+      <div className="pointer-events-none absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2.5 opacity-25">
+        <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-white/50">Scroll</span>
+        <div className="h-10 w-px bg-gradient-to-b from-white/35 to-transparent" />
+      </div>
     </section>
   )
 }

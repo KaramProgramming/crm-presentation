@@ -1,143 +1,146 @@
 import { useRef } from 'react'
-import { motion, useScroll, useTransform, useInView } from 'framer-motion'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useGSAP } from '@gsap/react'
 
-// Unsplash free-use furniture & interior design photos
+gsap.registerPlugin(ScrollTrigger)
+
 const photos = [
   {
-    url: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1200&q=80',
+    url: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=800&q=80',
     label: 'Modern Living',
-    speed: 0,
+    aspect: '3/4',
   },
   {
-    url: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80',
+    url: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=800&q=80',
     label: 'Premium Comfort',
-    speed: -30,
+    aspect: '2/3',
   },
   {
-    url: 'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=1200&q=80',
+    url: 'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=800&q=80',
     label: 'Elegant Spaces',
-    speed: 20,
+    aspect: '3/4',
   },
   {
-    url: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1200&q=80',
+    url: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=800&q=80',
     label: 'Clean Design',
-    speed: -15,
+    aspect: '2/3',
   },
 ]
 
-function ParallaxCard({ photo, index }) {
-  const ref = useRef(null)
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
-  const y = useTransform(scrollYProgress, [0, 1], [photo.speed * 2, photo.speed * -2])
-  const inView = useInView(ref, { once: true, margin: '-60px' })
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 40, scale: 0.95 }}
-      animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
-      transition={{ duration: 0.7, delay: index * 0.12, ease: [0.22, 1, 0.36, 1] }}
-      className="relative overflow-hidden rounded-2xl group cursor-default"
-      style={{ aspectRatio: index % 2 === 0 ? '3/4' : '2/3' }}
-      whileHover={{ scale: 1.02, zIndex: 10 }}
-    >
-      {/* Parallax image */}
-      <motion.div
-        style={{ y }}
-        className="absolute inset-[-10%] w-[120%] h-[120%]"
-      >
-        <img
-          src={photo.url}
-          alt={photo.label}
-          className="w-full h-full object-cover"
-          loading="lazy"
-        />
-      </motion.div>
-
-      {/* Gradient overlays — light touch, keep photo visible */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0f]/80 via-transparent to-transparent" />
-      <div className="absolute inset-0 bg-gradient-to-br from-brand-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-      {/* Shimmer border */}
-      <div className="absolute inset-0 rounded-2xl ring-1 ring-white/10 group-hover:ring-brand-500/40 transition-all duration-500" />
-
-      {/* Label */}
-      <div className="absolute bottom-4 left-4 right-4">
-        <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 0.4 + index * 0.1 }}
-          className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/10 backdrop-blur-sm rounded-full border border-white/15"
-        >
-          <span className="w-1.5 h-1.5 rounded-full bg-brand-400 animate-pulse" />
-          <span className="text-white/90 text-xs font-semibold tracking-wide">{photo.label}</span>
-        </motion.div>
-      </div>
-    </motion.div>
-  )
-}
-
 export default function FurnitureShowcase() {
   const sectionRef = useRef(null)
-  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] })
-  const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '15%'])
-  const titleY = useTransform(scrollYProgress, [0, 1], ['0px', '-40px'])
-  const titleOpacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.5, 1, 1, 0.5])
+  const titleRef   = useRef(null)
+  const gridRef    = useRef(null)
+
+  useGSAP(() => {
+    /* Title parallax + reveal */
+    gsap.fromTo(
+      titleRef.current.children,
+      { y: 50, opacity: 0 },
+      {
+        y: 0, opacity: 1, duration: 0.9, stagger: 0.13, ease: 'power3.out',
+        scrollTrigger: { trigger: titleRef.current, start: 'top 82%' },
+      }
+    )
+
+    /* Cards stagger up */
+    const cards = gridRef.current.querySelectorAll('.photo-card')
+    gsap.fromTo(
+      cards,
+      { y: 70, opacity: 0, scale: 0.95 },
+      {
+        y: 0, opacity: 1, scale: 1, duration: 0.9, stagger: 0.11, ease: 'power3.out',
+        scrollTrigger: { trigger: gridRef.current, start: 'top 80%' },
+      }
+    )
+
+    /* Subtle parallax on each photo's inner image */
+    cards.forEach((card) => {
+      const img = card.querySelector('.photo-inner')
+      gsap.to(img, {
+        y: '18%',
+        ease: 'none',
+        scrollTrigger: {
+          trigger: card,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: true,
+        },
+      })
+    })
+  }, { scope: sectionRef })
 
   return (
-    <section ref={sectionRef} className="relative py-24 overflow-hidden bg-[#0a0a0f]">
-      {/* Moving background texture */}
-      <motion.div
+    <section ref={sectionRef} className="relative py-32 overflow-hidden bg-[#07070b]">
+      {/* Grid background */}
+      <div
+        className="absolute inset-0 opacity-[0.03] pointer-events-none"
         style={{
-          y: bgY,
-          backgroundImage:
-            'linear-gradient(rgba(99,102,241,1) 1px, transparent 1px), linear-gradient(90deg, rgba(99,102,241,1) 1px, transparent 1px)',
-          backgroundSize: '40px 40px',
+          backgroundImage: 'linear-gradient(rgba(99,102,241,1) 1px, transparent 1px), linear-gradient(90deg, rgba(99,102,241,1) 1px, transparent 1px)',
+          backgroundSize: '48px 48px',
         }}
-        className="absolute inset-[-5%] w-[110%] h-[110%] opacity-[0.03] pointer-events-none"
       />
 
-      {/* Ambient glows */}
-      <div className="absolute top-1/4 left-0 w-[500px] h-[500px] bg-brand-700/10 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-1/4 right-0 w-[500px] h-[500px] bg-purple-700/10 rounded-full blur-[120px] pointer-events-none" />
+      {/* Orbs */}
+      <div className="absolute top-1/4 left-0 w-[480px] h-[480px] bg-indigo-800/8 rounded-full blur-[130px] pointer-events-none" />
+      <div className="absolute bottom-1/4 right-0 w-[420px] h-[420px] bg-purple-800/8 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10">
         {/* Title */}
-        <motion.div
-          style={{ y: titleY, opacity: titleOpacity }}
-          className="text-center mb-16"
-        >
-          <p className="text-white/30 text-xs font-semibold uppercase tracking-[0.3em] mb-4">
+        <div ref={titleRef} className="text-center mb-16">
+          <p className="text-white/25 text-xs font-semibold uppercase tracking-[0.3em] mb-4" style={{ opacity: 0 }}>
             The spaces your clients dream of
           </p>
-          <h2 className="text-4xl md:text-6xl font-black tracking-tight text-white leading-tight">
+          <h2 className="text-4xl md:text-6xl font-black tracking-tight text-white mb-4 leading-tight" style={{ opacity: 0 }}>
             Built for brands that{' '}
             <span className="text-gradient">inspire</span>
           </h2>
-          <p className="text-white/40 mt-4 text-lg max-w-xl mx-auto">
+          <p className="text-white/38 text-lg max-w-md mx-auto" style={{ opacity: 0 }}>
             Your CRM should match the quality of what you sell.
           </p>
-        </motion.div>
+        </div>
 
-        {/* Masonry-style photo grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 items-end">
+        {/* Photo grid */}
+        <div ref={gridRef} className="grid grid-cols-2 lg:grid-cols-4 gap-4 items-end">
           {photos.map((photo, i) => (
-            <ParallaxCard key={photo.label} photo={photo} index={i} />
+            <div
+              key={photo.label}
+              className="photo-card relative overflow-hidden rounded-2xl group cursor-default shine"
+              style={{ aspectRatio: photo.aspect, opacity: 0 }}
+            >
+              {/* Parallax image */}
+              <div className="photo-inner absolute inset-[-12%] w-[124%] h-[124%] will-change-transform">
+                <img
+                  src={photo.url}
+                  alt={photo.label}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  loading="lazy"
+                />
+              </div>
+
+              {/* Gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#07070b]/80 via-transparent to-transparent transition-opacity duration-500" />
+              <div className="absolute inset-0 bg-indigo-900/0 group-hover:bg-indigo-900/15 transition-all duration-500" />
+
+              {/* Ring */}
+              <div className="absolute inset-0 rounded-2xl ring-1 ring-white/8 group-hover:ring-indigo-500/35 transition-all duration-500" />
+
+              {/* Label */}
+              <div className="absolute bottom-4 left-4">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/[0.1] backdrop-blur-md rounded-full border border-white/12">
+                  <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
+                  <span className="text-white/85 text-xs font-semibold tracking-wide">{photo.label}</span>
+                </div>
+              </div>
+            </div>
           ))}
         </div>
 
-        {/* Bottom quote */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="mt-14 text-center"
-        >
-          <p className="text-white/25 text-sm italic max-w-lg mx-auto">
-            "From the showroom floor to the delivery truck — one system to manage it all."
-          </p>
-        </motion.div>
+        {/* Quote */}
+        <p className="text-center text-white/20 text-sm italic mt-14 max-w-lg mx-auto">
+          "From the showroom floor to the delivery truck — one system to manage it all."
+        </p>
       </div>
     </section>
   )

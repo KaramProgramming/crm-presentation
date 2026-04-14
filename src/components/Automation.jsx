@@ -1,200 +1,193 @@
 import { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
-import { Mail, ArrowRight, UserPlus, Bell, RefreshCw, Sparkles, Workflow, Plug } from 'lucide-react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useGSAP } from '@gsap/react'
+import { Mail, RefreshCw, UserPlus, Bell, Sparkles, Workflow, Plug, ArrowRight } from 'lucide-react'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const flows = [
   {
-    step: '01',
-    icon: Mail,
-    color: 'text-sky-400',
-    bg: 'from-sky-600/20 to-blue-600/5',
-    border: 'border-sky-500/20',
+    step: '01', Icon: Mail,
+    color: '#38bdf8', border: 'rgba(56,189,248,0.2)', bg: 'rgba(56,189,248,0.07)',
     title: 'Incoming email',
     desc: 'A potential customer sends an inquiry email to your sales address.',
   },
   {
-    step: '02',
-    icon: RefreshCw,
-    color: 'text-violet-400',
-    bg: 'from-violet-600/20 to-purple-600/5',
-    border: 'border-violet-500/20',
+    step: '02', Icon: RefreshCw,
+    color: '#a78bfa', border: 'rgba(167,139,250,0.2)', bg: 'rgba(167,139,250,0.07)',
     title: 'Automation triggered',
-    desc: 'The n8n workflow detects the email and automatically extracts the name, contact details and request.',
+    desc: 'The n8n workflow detects the email and extracts name, contact details and the request.',
   },
   {
-    step: '03',
-    icon: UserPlus,
-    color: 'text-brand-400',
-    bg: 'from-brand-600/20 to-indigo-600/5',
-    border: 'border-brand-500/20',
+    step: '03', Icon: UserPlus,
+    color: '#818cf8', border: 'rgba(99,102,241,0.2)', bg: 'rgba(99,102,241,0.07)',
     title: 'Customer created in CRM',
     desc: 'A new customer profile is automatically created with all available data pre-filled.',
   },
   {
-    step: '04',
-    icon: Bell,
-    color: 'text-emerald-400',
-    bg: 'from-emerald-600/20 to-teal-600/5',
-    border: 'border-emerald-500/20',
+    step: '04', Icon: Bell,
+    color: '#34d399', border: 'rgba(52,211,153,0.2)', bg: 'rgba(52,211,153,0.07)',
     title: 'Sales rep notified',
     desc: 'Your salesperson instantly receives a notification with the full lead context. Zero leads lost.',
   },
 ]
 
 const integrations = [
-  { name: 'n8n', desc: 'Workflow automation', icon: '⚡' },
-  { name: 'Email', desc: 'Gmail / Outlook', icon: '📧' },
-  { name: 'WhatsApp', desc: 'Direct messaging', icon: '💬' },
-  { name: 'Zapier', desc: 'SaaS connections', icon: '⚡' },
-  { name: 'Google Sheets', desc: 'Data export', icon: '📊' },
-  { name: 'Webhooks', desc: 'Custom API', icon: '🔗' },
+  { name: 'n8n',          desc: 'Workflow automation', icon: '⚡' },
+  { name: 'Email',        desc: 'Gmail / Outlook',      icon: '📧' },
+  { name: 'WhatsApp',     desc: 'Direct messaging',     icon: '💬' },
+  { name: 'Zapier',       desc: 'SaaS connections',     icon: '🔗' },
+  { name: 'Google Sheets', desc: 'Data export',         icon: '📊' },
+  { name: 'Webhooks',     desc: 'Custom API',           icon: '🛠' },
 ]
 
 export default function Automation() {
-  const titleRef = useRef(null)
-  const titleInView = useInView(titleRef, { once: true, margin: '-60px' })
-  const flowRef = useRef(null)
-  const flowInView = useInView(flowRef, { once: true, margin: '-80px' })
+  const sectionRef  = useRef(null)
+  const titleRef    = useRef(null)
+  const flowRef     = useRef(null)
+  const intRef      = useRef(null)
+  const bannerRef   = useRef(null)
+
+  useGSAP(() => {
+    /* Title */
+    gsap.fromTo(titleRef.current.children,
+      { y: 44, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.85, stagger: 0.12, ease: 'power3.out',
+        scrollTrigger: { trigger: titleRef.current, start: 'top 82%' } }
+    )
+
+    /* Flow cards */
+    gsap.fromTo(flowRef.current.querySelectorAll('.flow-card'),
+      { y: 55, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.8, stagger: 0.13, ease: 'power3.out',
+        scrollTrigger: { trigger: flowRef.current, start: 'top 82%' } }
+    )
+
+    /* Integration cards */
+    gsap.fromTo(intRef.current.querySelectorAll('.int-card'),
+      { scale: 0.88, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.65, stagger: 0.07, ease: 'back.out(1.5)',
+        scrollTrigger: { trigger: intRef.current, start: 'top 84%' } }
+    )
+
+    /* Banner */
+    gsap.fromTo(bannerRef.current,
+      { y: 30, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.75, ease: 'power3.out',
+        scrollTrigger: { trigger: bannerRef.current, start: 'top 88%' } }
+    )
+  }, { scope: sectionRef })
 
   return (
-    <section id="automation" className="relative py-28 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0f] via-[#0d0d1a] to-[#0a0a0f]" />
-      <div className="absolute top-1/3 right-0 w-[500px] h-[500px] bg-violet-900/15 rounded-full blur-[130px] pointer-events-none" />
-      <div className="absolute bottom-1/3 left-0 w-[400px] h-[400px] bg-brand-900/10 rounded-full blur-[120px] pointer-events-none" />
+    <section ref={sectionRef} id="automation" className="relative py-32 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-b from-[#07070b] via-[#0d0d1a] to-[#07070b]" />
+      <div className="absolute top-1/3 right-0 w-[500px] h-[500px] bg-violet-900/10 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute bottom-1/3 left-0 w-[400px] h-[400px] bg-indigo-900/8 rounded-full blur-[130px] pointer-events-none" />
 
-      <div className="relative z-10 max-w-7xl mx-auto section-padding">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10">
         {/* Header */}
         <div ref={titleRef} className="text-center mb-20">
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={titleInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-300 text-sm font-medium mb-6"
+          <div
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-violet-300 text-sm font-medium mb-7"
+            style={{ background: 'rgba(139,92,246,0.08)', border: '1px solid rgba(139,92,246,0.15)', opacity: 0 }}
           >
             <Sparkles size={14} className="text-violet-400" />
             Automation & Integrations
-          </motion.div>
-
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            animate={titleInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-4xl md:text-5xl font-black tracking-tight text-white mb-5"
-          >
+          </div>
+          <h2 className="text-4xl md:text-[58px] font-black tracking-tight text-white mb-5 leading-[1.08]" style={{ opacity: 0 }}>
             The CRM works
             <br />
             <span className="text-gradient">even while you sleep</span>
-          </motion.h2>
-
-          <motion.p
-            initial={{ opacity: 0, y: 15 }}
-            animate={titleInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-white/50 text-lg max-w-2xl mx-auto"
-          >
+          </h2>
+          <p className="text-white/42 text-lg max-w-2xl mx-auto" style={{ opacity: 0 }}>
             With automation integrations, repetitive tasks are handled automatically.
             Your team stays focused on what matters: closing deals.
-          </motion.p>
+          </p>
         </div>
 
         {/* Flow diagram */}
         <div ref={flowRef} className="mb-20">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 relative">
-            {/* Connector line (desktop) */}
-            <div className="hidden lg:block absolute top-12 left-[12.5%] right-[12.5%] h-px bg-gradient-to-r from-transparent via-brand-500/40 to-transparent pointer-events-none" />
+            {/* Connector line */}
+            <div
+              className="hidden lg:block absolute top-12 left-[12.5%] right-[12.5%] h-px pointer-events-none"
+              style={{ background: 'linear-gradient(90deg, transparent, rgba(99,102,241,0.3) 20%, rgba(99,102,241,0.3) 80%, transparent)' }}
+            />
 
-            {flows.map((flow, i) => {
-              const Icon = flow.icon
-              return (
-                <motion.div
-                  key={flow.step}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={flowInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.5, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] }}
-                  className="relative flex flex-col items-center text-center"
+            {flows.map((flow, i) => (
+              <div
+                key={flow.step}
+                className="flow-card relative rounded-2xl p-6 text-center shine transition-transform duration-300 hover:-translate-y-2"
+                style={{ opacity: 0, background: flow.bg, border: `1px solid ${flow.border}` }}
+              >
+                <span className="absolute top-4 right-4 text-xs font-black text-white/[0.06] tracking-widest">{flow.step}</span>
+                <div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4"
+                  style={{ background: flow.bg, border: `1px solid ${flow.border}` }}
                 >
-                  {i < flows.length - 1 && (
-                    <div className="lg:hidden flex justify-center my-3">
-                      <ArrowRight size={20} className="text-white/20 rotate-90 md:rotate-0" />
-                    </div>
-                  )}
-
-                  <div className={`relative w-full bg-gradient-to-br ${flow.bg} border ${flow.border} rounded-2xl p-6 card-shine`}>
-                    <span className="absolute top-4 right-4 text-xs font-black text-white/20 tracking-widest">
-                      {flow.step}
-                    </span>
-                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${flow.bg} border ${flow.border} flex items-center justify-center mx-auto mb-4`}>
-                      <Icon size={22} className={flow.color} />
-                    </div>
-                    <h3 className="text-white font-bold text-base mb-2">{flow.title}</h3>
-                    <p className="text-white/50 text-sm leading-relaxed">{flow.desc}</p>
-                  </div>
-                </motion.div>
-              )
-            })}
+                  <flow.Icon size={22} style={{ color: flow.color }} />
+                </div>
+                <h3 className="text-white font-bold text-sm mb-2">{flow.title}</h3>
+                <p className="text-white/42 text-xs leading-relaxed">{flow.desc}</p>
+              </div>
+            ))}
           </div>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={flowInView ? { opacity: 1 } : {}}
-            transition={{ delay: 0.7 }}
-            className="mt-6 text-center"
-          >
-            <span className="inline-flex items-center gap-2 px-4 py-2 bg-brand-600/10 border border-brand-500/20 rounded-full text-brand-300 text-sm font-semibold">
+          <div className="mt-6 text-center">
+            <span
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-indigo-300 text-sm font-semibold"
+              style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.15)' }}
+            >
               <Workflow size={14} />
               All of this happens in under 30 seconds, automatically
             </span>
-          </motion.div>
+          </div>
         </div>
 
-        {/* Integrations grid */}
+        {/* Integrations */}
         <div>
-          <motion.h3
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="text-center text-white/50 text-sm font-semibold uppercase tracking-widest mb-8"
-          >
+          <p className="text-center text-white/32 text-xs font-semibold uppercase tracking-[0.22em] mb-8">
             Integrates with your existing tools
-          </motion.h3>
+          </p>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {integrations.map((int, i) => (
-              <motion.div
+          <div ref={intRef} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            {integrations.map(int => (
+              <div
                 key={int.name}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.35, delay: i * 0.06 }}
-                whileHover={{ y: -4, scale: 1.04 }}
-                className="bg-glass bg-glass-hover rounded-2xl p-5 border border-white/8 text-center card-shine cursor-default"
+                className="int-card group rounded-2xl p-5 text-center cursor-default shine transition-all duration-300 hover:-translate-y-1.5"
+                style={{ opacity: 0, background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.06)' }}
               >
                 <div className="text-3xl mb-2">{int.icon}</div>
                 <p className="text-white font-bold text-sm">{int.name}</p>
-                <p className="text-white/40 text-xs mt-0.5">{int.desc}</p>
-              </motion.div>
+                <p className="text-white/35 text-xs mt-0.5">{int.desc}</p>
+              </div>
             ))}
           </div>
         </div>
 
         {/* Future-ready banner */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="mt-12 bg-gradient-to-r from-violet-600/15 via-brand-600/15 to-purple-600/15 border border-brand-500/20 rounded-2xl p-8 text-center"
+        <div
+          ref={bannerRef}
+          className="mt-12 rounded-2xl p-8 text-center"
+          style={{
+            opacity: 0,
+            background: 'linear-gradient(135deg, rgba(139,92,246,0.1), rgba(99,102,241,0.1), rgba(139,92,246,0.1))',
+            border: '1px solid rgba(99,102,241,0.18)',
+          }}
         >
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-600/20 to-brand-600/10 border border-violet-500/20 flex items-center justify-center mx-auto mb-4">
+          <div
+            className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4"
+            style={{ background: 'rgba(139,92,246,0.15)', border: '1px solid rgba(139,92,246,0.2)' }}
+          >
             <Plug size={22} className="text-violet-400" />
           </div>
           <h3 className="text-white font-black text-xl mb-2">Built for the future</h3>
-          <p className="text-white/50 text-sm max-w-lg mx-auto leading-relaxed">
-            The open architecture of the CRM lets you add new automations and integrations
-            at any time — no coding required, no platform switch needed.
+          <p className="text-white/42 text-sm max-w-lg mx-auto leading-relaxed">
+            The open architecture lets you add new automations and integrations at any time —
+            no coding required, no platform switch needed.
           </p>
-        </motion.div>
+        </div>
       </div>
     </section>
   )

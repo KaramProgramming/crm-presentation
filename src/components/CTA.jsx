@@ -1,8 +1,36 @@
 import { useRef, useState } from 'react'
-import { motion, useInView } from 'framer-motion'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useGSAP } from '@gsap/react'
 import { ArrowRight, CheckCircle2, Send, Phone, Mail, MapPin } from 'lucide-react'
 
-const benefits = [
+gsap.registerPlugin(ScrollTrigger)
+
+/* Magnetic button */
+function MagneticBtn({ children, type, className, onClick }) {
+  const wrapRef  = useRef(null)
+  const innerRef = useRef(null)
+
+  const onMove = (e) => {
+    const { left, top, width, height } = wrapRef.current.getBoundingClientRect()
+    const x = (e.clientX - left - width / 2) * 0.2
+    const y = (e.clientY - top - height / 2) * 0.2
+    gsap.to(innerRef.current, { x, y, duration: 0.4, ease: 'power2.out' })
+  }
+  const onLeave = () => {
+    gsap.to(innerRef.current, { x: 0, y: 0, duration: 0.85, ease: 'elastic.out(1, 0.4)' })
+  }
+
+  return (
+    <div ref={wrapRef} onMouseMove={onMove} onMouseLeave={onLeave} className="inline-block w-full">
+      <button ref={innerRef} type={type} className={className} onClick={onClick}>
+        {children}
+      </button>
+    </div>
+  )
+}
+
+const perks = [
   'Personalized demo for your business',
   'No commitment required',
   'Assisted setup included',
@@ -10,225 +38,212 @@ const benefits = [
 ]
 
 export default function CTA() {
-  const ref = useRef(null)
-  const inView = useInView(ref, { once: true, margin: '-60px' })
+  const sectionRef = useRef(null)
+  const copyRef    = useRef(null)
+  const formRef    = useRef(null)
   const [form, setForm] = useState({ name: '', company: '', email: '', phone: '' })
   const [submitted, setSubmitted] = useState(false)
 
-  const handleChange = (e) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
-  }
+  useGSAP(() => {
+    gsap.fromTo(copyRef.current.children,
+      { y: 44, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.85, stagger: 0.11, ease: 'power3.out',
+        scrollTrigger: { trigger: copyRef.current, start: 'top 82%' } }
+    )
+    gsap.fromTo(formRef.current,
+      { x: 35, opacity: 0 },
+      { x: 0, opacity: 1, duration: 0.95, ease: 'expo.out',
+        scrollTrigger: { trigger: formRef.current, start: 'top 82%' } }
+    )
+  }, { scope: sectionRef })
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    // In production, wire to your backend or email service
     setSubmitted(true)
   }
 
-  return (
-    <section id="cta" className="relative py-28 overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0f] via-[#0c0c1e] to-[#060608]" />
-      <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse 80% 60% at 50% 50%, rgba(79,70,229,0.12) 0%, transparent 70%)' }} />
+  const inputCls = `
+    w-full rounded-xl px-4 py-3 text-white text-sm outline-none transition-all duration-200
+    placeholder-white/22 font-medium
+  `
+  const inputStyle = {
+    background: 'rgba(255,255,255,0.04)',
+    border: '1px solid rgba(255,255,255,0.08)',
+  }
+  const inputFocusStyle = `focus:ring-2 focus:ring-indigo-500/30`
 
-      {/* Grid */}
+  return (
+    <section ref={sectionRef} id="cta" className="relative py-32 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-b from-[#07070b] via-[#0c0c1e] to-[#040406]" />
+      <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse 80% 60% at 50% 50%, rgba(79,70,229,0.09) 0%, transparent 70%)' }} />
       <div
-        className="absolute inset-0 opacity-[0.03]"
+        className="absolute inset-0 opacity-[0.03] pointer-events-none"
         style={{
           backgroundImage: 'linear-gradient(rgba(99,102,241,1) 1px, transparent 1px), linear-gradient(90deg, rgba(99,102,241,1) 1px, transparent 1px)',
-          backgroundSize: '60px 60px',
+          backgroundSize: '64px 64px',
         }}
       />
 
-      <div ref={ref} className="relative z-10 max-w-6xl mx-auto section-padding">
+      <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-10">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
 
           {/* Left — copy */}
-          <div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-300 text-sm font-medium mb-8"
+          <div ref={copyRef}>
+            <div
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-indigo-300 text-sm font-medium mb-8"
+              style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.15)', opacity: 0 }}
             >
-              <span className="w-2 h-2 rounded-full bg-brand-400 animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-indigo-400 animate-pulse" />
               Get Started Today
-            </motion.div>
+            </div>
 
-            <motion.h2
-              initial={{ opacity: 0, y: 25 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-4xl md:text-5xl font-black tracking-tight text-white mb-6 leading-tight"
+            <h2
+              className="text-4xl md:text-[52px] font-black tracking-tight text-white mb-6 leading-[1.08]"
+              style={{ opacity: 0 }}
             >
               Transform your business
               <br />
               with{' '}
               <span className="text-gradient">FurniCRM</span>
-            </motion.h2>
+            </h2>
 
-            <motion.p
-              initial={{ opacity: 0, y: 15 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-white/55 text-lg leading-relaxed mb-10"
-            >
-              Book a free 30-minute demo. We will show you how the CRM
-              adapts to your structure, your products, and your team.
-            </motion.p>
+            <p className="text-white/45 text-lg leading-relaxed mb-10" style={{ opacity: 0 }}>
+              Book a free 30-minute demo. We'll show you how the CRM adapts to your structure,
+              your products, and your team — live.
+            </p>
 
-            <motion.ul
-              initial={{ opacity: 0, y: 15 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="space-y-3 mb-12"
-            >
-              {benefits.map((b, i) => (
-                <motion.li
-                  key={b}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={inView ? { opacity: 1, x: 0 } : {}}
-                  transition={{ delay: 0.35 + i * 0.07 }}
-                  className="flex items-center gap-3 text-white/70"
-                >
-                  <CheckCircle2 size={18} className="text-brand-400 shrink-0" />
-                  {b}
-                </motion.li>
+            {/* Perks */}
+            <ul className="space-y-3 mb-12" style={{ opacity: 0 }}>
+              {perks.map((p) => (
+                <li key={p} className="flex items-center gap-3 text-white/62">
+                  <CheckCircle2 size={17} className="text-indigo-400 shrink-0" />
+                  {p}
+                </li>
               ))}
-            </motion.ul>
+            </ul>
 
-            {/* Contact info */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={inView ? { opacity: 1 } : {}}
-              transition={{ delay: 0.6 }}
-              className="space-y-3"
-            >
+            {/* Contact */}
+            <div className="space-y-3" style={{ opacity: 0 }}>
               {[
-                { icon: Phone, text: '+39 xxx xxx xxxx', label: 'Call us directly' },
-                { icon: Mail, text: 'demo@furnicrm.com', label: 'Send us an email' },
-                { icon: MapPin, text: 'Available globally', label: 'Remote & on-site demos' },
-              ].map(({ icon: Icon, text, label }) => (
+                { Icon: Phone, text: '+39 xxx xxx xxxx', label: 'Call us directly' },
+                { Icon: Mail,  text: 'demo@furnicrm.com', label: 'Send an email' },
+                { Icon: MapPin, text: 'Available globally', label: 'Remote & on-site demos' },
+              ].map(({ Icon, text, label }) => (
                 <div key={label} className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-brand-600/15 border border-brand-500/20 flex items-center justify-center">
-                    <Icon size={15} className="text-brand-400" />
+                  <div
+                    className="w-9 h-9 rounded-xl flex items-center justify-center"
+                    style={{ background: 'rgba(99,102,241,0.1)', border: '1px solid rgba(99,102,241,0.18)' }}
+                  >
+                    <Icon size={14} className="text-indigo-400" />
                   </div>
                   <div>
-                    <p className="text-white/80 text-sm font-medium">{text}</p>
-                    <p className="text-white/35 text-xs">{label}</p>
+                    <p className="text-white/72 text-sm font-medium">{text}</p>
+                    <p className="text-white/30 text-xs">{label}</p>
                   </div>
                 </div>
               ))}
-            </motion.div>
+            </div>
           </div>
 
           {/* Right — form */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="bg-glass rounded-3xl border border-white/10 p-8 shadow-2xl"
+          <div
+            ref={formRef}
+            className="rounded-3xl p-8 shine"
+            style={{
+              opacity: 0,
+              background: 'rgba(255,255,255,0.025)',
+              border: '1px solid rgba(255,255,255,0.08)',
+              boxShadow: '0 32px 80px rgba(0,0,0,0.4)',
+            }}
           >
             {submitted ? (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="text-center py-10"
-              >
-                <div className="w-16 h-16 rounded-full bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center mx-auto mb-4">
+              <div className="text-center py-12">
+                <div
+                  className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5"
+                  style={{ background: 'rgba(52,211,153,0.12)', border: '1px solid rgba(52,211,153,0.25)' }}
+                >
                   <CheckCircle2 size={28} className="text-emerald-400" />
                 </div>
                 <h3 className="text-white font-black text-2xl mb-2">Request sent!</h3>
-                <p className="text-white/55 text-sm leading-relaxed">
-                  We will reach out within 24 hours to schedule your personalized demo.
+                <p className="text-white/45 text-sm leading-relaxed">
+                  We'll reach out within 24 hours to schedule your personalized demo.
                 </p>
-              </motion.div>
+              </div>
             ) : (
               <>
                 <div className="mb-7">
                   <h3 className="text-white font-black text-xl mb-1">Request Your Free Demo</h3>
-                  <p className="text-white/45 text-sm">Fill in the form — we will respond within 24 hours.</p>
+                  <p className="text-white/38 text-sm">Fill in the form — we'll respond within 24 hours.</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-white/50 text-xs font-semibold mb-1.5 uppercase tracking-wide">
-                        Name *
-                      </label>
+                      <label className="block text-white/40 text-[11px] font-semibold mb-1.5 uppercase tracking-wider">Name *</label>
                       <input
-                        type="text"
-                        name="name"
-                        required
+                        type="text" name="name" required
                         value={form.name}
-                        onChange={handleChange}
+                        onChange={e => setForm(p => ({ ...p, name: e.target.value }))}
                         placeholder="John Smith"
-                        className="w-full bg-white/5 border border-white/10 focus:border-brand-500/50 focus:bg-white/8 rounded-xl px-4 py-3 text-white placeholder-white/25 text-sm outline-none transition-all duration-200"
+                        className={`${inputCls} ${inputFocusStyle}`}
+                        style={inputStyle}
                       />
                     </div>
                     <div>
-                      <label className="block text-white/50 text-xs font-semibold mb-1.5 uppercase tracking-wide">
-                        Company *
-                      </label>
+                      <label className="block text-white/40 text-[11px] font-semibold mb-1.5 uppercase tracking-wider">Company *</label>
                       <input
-                        type="text"
-                        name="company"
-                        required
+                        type="text" name="company" required
                         value={form.company}
-                        onChange={handleChange}
-                        placeholder="Smith Furniture Co."
-                        className="w-full bg-white/5 border border-white/10 focus:border-brand-500/50 rounded-xl px-4 py-3 text-white placeholder-white/25 text-sm outline-none transition-all duration-200"
+                        onChange={e => setForm(p => ({ ...p, company: e.target.value }))}
+                        placeholder="Smith Furniture"
+                        className={`${inputCls} ${inputFocusStyle}`}
+                        style={inputStyle}
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-white/50 text-xs font-semibold mb-1.5 uppercase tracking-wide">
-                      Email *
-                    </label>
+                    <label className="block text-white/40 text-[11px] font-semibold mb-1.5 uppercase tracking-wider">Email *</label>
                     <input
-                      type="email"
-                      name="email"
-                      required
+                      type="email" name="email" required
                       value={form.email}
-                      onChange={handleChange}
+                      onChange={e => setForm(p => ({ ...p, email: e.target.value }))}
                       placeholder="john@smithfurniture.com"
-                      className="w-full bg-white/5 border border-white/10 focus:border-brand-500/50 rounded-xl px-4 py-3 text-white placeholder-white/25 text-sm outline-none transition-all duration-200"
+                      className={`${inputCls} ${inputFocusStyle}`}
+                      style={inputStyle}
                     />
                   </div>
 
                   <div>
-                    <label className="block text-white/50 text-xs font-semibold mb-1.5 uppercase tracking-wide">
-                      Phone
-                    </label>
+                    <label className="block text-white/40 text-[11px] font-semibold mb-1.5 uppercase tracking-wider">Phone</label>
                     <input
-                      type="tel"
-                      name="phone"
+                      type="tel" name="phone"
                       value={form.phone}
-                      onChange={handleChange}
+                      onChange={e => setForm(p => ({ ...p, phone: e.target.value }))}
                       placeholder="+1 xxx xxx xxxx"
-                      className="w-full bg-white/5 border border-white/10 focus:border-brand-500/50 rounded-xl px-4 py-3 text-white placeholder-white/25 text-sm outline-none transition-all duration-200"
+                      className={`${inputCls} ${inputFocusStyle}`}
+                      style={inputStyle}
                     />
                   </div>
 
-                  <motion.button
-                    type="submit"
-                    whileHover={{ scale: 1.02, y: -1 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="group w-full flex items-center justify-center gap-2 px-8 py-4 bg-brand-600 hover:bg-brand-500 text-white font-bold rounded-xl shadow-2xl shadow-brand-900/50 transition-all duration-200 mt-2"
-                  >
-                    <Send size={16} />
-                    Request Free Demo
-                    <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                  </motion.button>
+                  <div className="pt-1">
+                    <MagneticBtn
+                      type="submit"
+                      className="btn-primary w-full justify-center gap-2.5 text-base group"
+                    >
+                      <Send size={16} />
+                      Request Free Demo
+                      <ArrowRight size={16} className="transition-transform duration-200 group-hover:translate-x-1" />
+                    </MagneticBtn>
+                  </div>
 
-                  <p className="text-white/30 text-xs text-center">
+                  <p className="text-white/22 text-xs text-center">
                     No lock-in. No hidden costs. Just a conversation.
                   </p>
                 </form>
               </>
             )}
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>
