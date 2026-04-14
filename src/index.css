@@ -37,6 +37,40 @@
   }
 }
 
+.intro-stage {
+  height: 100vh;
+  min-height: 100svh;
+}
+
+@supports (height: 100dvh) {
+  .intro-stage {
+    height: 100dvh;
+    min-height: 100dvh;
+  }
+}
+
+.intro-video {
+  object-position: center center;
+  transform: scale(1.02);
+  will-change: transform;
+}
+
+@media (max-width: 768px), (pointer: coarse) {
+  .intro-video {
+    transform: scale(1.08);
+  }
+
+  .cursor-glow {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .intro-video {
+    transform: scale(1.12);
+  }
+}
+
 @layer utilities {
   .text-gradient {
     background: linear-gradient(135deg, #a5b4fc 0%, #818cf8 40%, #c4b5fd 100%);

@@ -77,7 +77,7 @@ export default function VideoIntro() {
   }
 
   return (
-    <section ref={sectionRef} className="relative h-screen overflow-hidden bg-[#020204]">
+    <section ref={sectionRef} className="intro-stage relative overflow-hidden bg-[#020204]">
       <video
         ref={videoRef}
         src={scrollIntroVideo}
@@ -88,7 +88,7 @@ export default function VideoIntro() {
         disableRemotePlayback
         onLoadedMetadata={handleLoadedMetadata}
         onEnded={handleEnded}
-        className="absolute inset-0 h-full w-full object-cover"
+        className="intro-video absolute inset-0 h-full w-full object-cover"
       />
 
       <div className="absolute inset-0 bg-black/8" />
