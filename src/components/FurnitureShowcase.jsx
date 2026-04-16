@@ -72,19 +72,19 @@ export default function FurnitureShowcase() {
   }, { scope: sectionRef })
 
   return (
-    <section ref={sectionRef} className="relative py-32 overflow-hidden bg-[#07070b]">
+    <section ref={sectionRef} className="relative py-32 overflow-hidden bg-[#180e04]">
       {/* Grid background */}
       <div
         className="absolute inset-0 opacity-[0.03] pointer-events-none"
         style={{
-          backgroundImage: 'linear-gradient(rgba(99,102,241,1) 1px, transparent 1px), linear-gradient(90deg, rgba(99,102,241,1) 1px, transparent 1px)',
+          backgroundImage: 'linear-gradient(rgba(212,164,58,1) 1px, transparent 1px), linear-gradient(90deg, rgba(212,164,58,1) 1px, transparent 1px)',
           backgroundSize: '48px 48px',
         }}
       />
 
       {/* Orbs */}
-      <div className="absolute top-1/4 left-0 w-[480px] h-[480px] bg-indigo-800/8 rounded-full blur-[130px] pointer-events-none" />
-      <div className="absolute bottom-1/4 right-0 w-[420px] h-[420px] bg-purple-800/8 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-1/4 left-0 w-[480px] h-[480px] bg-[#d4a43a]/6 rounded-full blur-[130px] pointer-events-none" />
+      <div className="absolute bottom-1/4 right-0 w-[420px] h-[420px] bg-[#b8860b]/5 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10">
         {/* Title */}
@@ -120,16 +120,16 @@ export default function FurnitureShowcase() {
               </div>
 
               {/* Gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#07070b]/80 via-transparent to-transparent transition-opacity duration-500" />
-              <div className="absolute inset-0 bg-indigo-900/0 group-hover:bg-indigo-900/15 transition-all duration-500" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#1c1208]/80 via-transparent to-transparent transition-opacity duration-500" />
+              <div className="absolute inset-0 bg-[#d4a43a]/0 group-hover:bg-[#d4a43a]/8 transition-all duration-500" />
 
               {/* Ring */}
-              <div className="absolute inset-0 rounded-2xl ring-1 ring-white/8 group-hover:ring-indigo-500/35 transition-all duration-500" />
+              <div className="absolute inset-0 rounded-2xl ring-1 ring-white/8 group-hover:ring-[#d4a43a]/30 transition-all duration-500" />
 
               {/* Label */}
               <div className="absolute bottom-4 left-4">
                 <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/[0.1] backdrop-blur-md rounded-full border border-white/12">
-                  <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#d4a43a] animate-pulse" />
                   <span className="text-white/85 text-xs font-semibold tracking-wide">{photo.label}</span>
                 </div>
               </div>

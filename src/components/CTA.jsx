@@ -159,16 +159,17 @@ export default function CTA() {
     background: 'rgba(255,255,255,0.04)',
     border: '1px solid rgba(255,255,255,0.08)',
   }
-  const inputFocusStyle = `focus:ring-2 focus:ring-indigo-500/30`
+  const inputFocusStyle = `focus:ring-2 focus:ring-[#d4a43a]/25`
 
   return (
     <section ref={sectionRef} id="cta" className="relative py-32 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-[#07070b] via-[#0c0c1e] to-[#040406]" />
-      <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse 80% 60% at 50% 50%, rgba(79,70,229,0.09) 0%, transparent 70%)' }} />
+      <div className="absolute inset-0 luxury-section-bg" />
+      <div className="absolute inset-0 luxury-crystal-walls pointer-events-none" />
+      <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse 80% 60% at 50% 50%, rgba(184,134,11,0.07) 0%, transparent 70%)' }} />
       <div
         className="absolute inset-0 opacity-[0.03] pointer-events-none"
         style={{
-          backgroundImage: 'linear-gradient(rgba(99,102,241,1) 1px, transparent 1px), linear-gradient(90deg, rgba(99,102,241,1) 1px, transparent 1px)',
+          backgroundImage: 'linear-gradient(rgba(212,164,58,1) 1px, transparent 1px), linear-gradient(90deg, rgba(212,164,58,1) 1px, transparent 1px)',
           backgroundSize: '64px 64px',
         }}
       />
@@ -179,15 +180,15 @@ export default function CTA() {
           {/* Left — copy */}
           <div ref={copyRef}>
             <div
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-indigo-300 text-sm font-medium mb-8"
-              style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.15)', opacity: 0 }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-[#e8c87a] text-sm font-medium mb-8"
+              style={{ background: 'rgba(212,164,58,0.08)', border: '1px solid rgba(212,164,58,0.18)', opacity: 0 }}
             >
-              <span className="w-2 h-2 rounded-full bg-indigo-400 animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-[#d4a43a] animate-pulse" />
               Get Started Today
             </div>
 
             <h2
-              className="text-4xl md:text-[52px] font-black tracking-tight text-white mb-6 leading-[1.08]"
+              className="font-display text-4xl md:text-[52px] font-black tracking-tight text-white mb-6 leading-[1.08]"
               style={{ opacity: 0 }}
             >
               Transform your business
@@ -205,7 +206,7 @@ export default function CTA() {
             <ul className="space-y-3 mb-12" style={{ opacity: 0 }}>
               {perks.map((p) => (
                 <li key={p} className="flex items-center gap-3 text-white/62">
-                  <CheckCircle2 size={17} className="text-indigo-400 shrink-0" />
+                  <CheckCircle2 size={17} className="text-[#d4a43a] shrink-0" />
                   {p}
                 </li>
               ))}
@@ -221,9 +222,9 @@ export default function CTA() {
                 <div key={label} className="flex items-center gap-3">
                   <div
                     className="w-9 h-9 rounded-xl flex items-center justify-center"
-                    style={{ background: 'rgba(99,102,241,0.1)', border: '1px solid rgba(99,102,241,0.18)' }}
+                    style={{ background: 'rgba(212,164,58,0.08)', border: '1px solid rgba(212,164,58,0.18)' }}
                   >
-                    <Icon size={14} className="text-indigo-400" />
+                    <Icon size={14} className="text-[#d4a43a]" />
                   </div>
                   <div>
                     <p className="text-white/72 text-sm font-medium">{text}</p>

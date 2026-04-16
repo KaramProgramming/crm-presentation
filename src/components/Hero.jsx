@@ -45,9 +45,9 @@ function SplitWords({ text }) {
 }
 
 const metricCards = [
-  { icon: TrendingUp, label: 'Monthly Revenue', value: '+34%', sub: 'vs previous month', color: '#818cf8' },
+  { icon: TrendingUp, label: 'Monthly Revenue', value: '+34%', sub: 'vs previous month', color: '#d4a43a' },
   { icon: Users, label: 'New Customers', value: '128', sub: 'this quarter', color: '#34d399' },
-  { icon: Package, label: 'Active Projects', value: '47', sub: 'in progress', color: '#fb923c' },
+  { icon: Package, label: 'Active Projects', value: '47', sub: 'in progress', color: '#cd7f32' },
 ]
 
 export default function Hero() {
@@ -145,33 +145,33 @@ export default function Hero() {
         />
       </div>
 
-      <div className="absolute inset-0 bg-[#07070b]/60" />
+      <div className="absolute inset-0 bg-[#1c1208]/60" />
       <div
         className="absolute inset-0"
         style={{ background: 'linear-gradient(95deg, rgba(7,7,11,0.88) 0%, rgba(7,7,11,0.5) 52%, rgba(7,7,11,0.12) 100%)' }}
       />
-      <div className="absolute inset-x-0 bottom-0 h-56" style={{ background: 'linear-gradient(to top, #07070b, transparent)' }} />
-      <div className="absolute inset-x-0 top-0 h-28" style={{ background: 'linear-gradient(to bottom, #07070b, transparent)' }} />
+      <div className="absolute inset-x-0 bottom-0 h-56" style={{ background: 'linear-gradient(to top, #180e04, transparent)' }} />
+      <div className="absolute inset-x-0 top-0 h-28" style={{ background: 'linear-gradient(to bottom, #180e04, transparent)' }} />
 
       <div
         className="absolute inset-0 pointer-events-none opacity-[0.045]"
         style={{
-          backgroundImage: 'linear-gradient(rgba(99,102,241,1) 1px, transparent 1px), linear-gradient(90deg, rgba(99,102,241,1) 1px, transparent 1px)',
+          backgroundImage: 'linear-gradient(rgba(212,164,58,1) 1px, transparent 1px), linear-gradient(90deg, rgba(212,164,58,1) 1px, transparent 1px)',
           backgroundSize: '64px 64px',
         }}
       />
 
-      <div className="absolute top-1/3 left-1/3 h-96 w-96 rounded-full bg-indigo-600/18 blur-[130px] pointer-events-none" />
-      <div className="absolute bottom-1/3 right-1/4 h-80 w-80 rounded-full bg-purple-600/12 blur-[110px] pointer-events-none" />
+      <div className="absolute top-1/3 left-1/3 h-96 w-96 rounded-full bg-[#d4a43a]/10 blur-[130px] pointer-events-none" />
+      <div className="absolute bottom-1/3 right-1/4 h-80 w-80 rounded-full bg-[#b8860b]/8 blur-[110px] pointer-events-none" />
 
       <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-16 px-6 py-24 md:px-10 lg:grid-cols-[1fr_380px]">
         <div>
           <div
             ref={badgeRef}
-            className="mb-8 inline-flex items-center gap-2 rounded-full border border-indigo-500/20 bg-indigo-600/10 px-4 py-2 text-sm font-medium text-indigo-300"
+            className="mb-8 inline-flex items-center gap-2 rounded-full border border-[#d4a43a]/20 bg-[#d4a43a]/8 px-4 py-2 text-sm font-medium text-[#e8c87a]"
             style={{ opacity: 0 }}
           >
-            <span className="h-2 w-2 rounded-full bg-indigo-400 animate-pulse" />
+            <span className="h-2 w-2 rounded-full bg-[#d4a43a] animate-pulse" />
             CRM Built for Furniture Companies
           </div>
 
@@ -216,8 +216,8 @@ export default function Hero() {
               {['A', 'B', 'C', 'D'].map((letter, index) => (
                 <div
                   key={index}
-                  className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-[#07070b] text-xs font-bold text-white"
-                  style={{ background: `hsl(${215 + index * 35}, 70%, 52%)` }}
+                  className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-[#180e04] text-xs font-bold text-white"
+                  style={{ background: `hsl(${35 + index * 18}, 65%, 45%)` }}
                 >
                   {letter}
                 </div>
@@ -274,8 +274,8 @@ export default function Hero() {
                       style={{
                         height: `${height}%`,
                         background: index === 5
-                          ? 'linear-gradient(to top, #4f46e5, #818cf8)'
-                          : 'rgba(99,102,241,0.18)',
+                          ? 'linear-gradient(to top, #b8860b, #d4a43a)'
+                          : 'rgba(212,164,58,0.18)',
                       }}
                     />
                   ))}

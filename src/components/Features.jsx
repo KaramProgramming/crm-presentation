@@ -7,51 +7,54 @@ import { Users, TrendingUp, FileText, LayoutDashboard, Package, Bell, ChevronRig
 
 gsap.registerPlugin(ScrollTrigger)
 
+const palette = [
+  { color: '#f3dfb2', border: 'rgba(243,223,178,0.2)', bg: 'rgba(243,223,178,0.07)' },
+  { color: '#e8c87a', border: 'rgba(232,200,122,0.2)', bg: 'rgba(232,200,122,0.07)' },
+  { color: '#d4a43a', border: 'rgba(212,164,58,0.2)', bg: 'rgba(212,164,58,0.07)' },
+  { color: '#c99554', border: 'rgba(201,149,84,0.2)', bg: 'rgba(201,149,84,0.07)' },
+  { color: '#b8860b', border: 'rgba(184,134,11,0.2)', bg: 'rgba(184,134,11,0.07)' },
+  { color: '#8f6333', border: 'rgba(143,99,51,0.2)', bg: 'rgba(143,99,51,0.07)' },
+]
+
 const features = [
   {
-    id: 'customers', Icon: Users,
-    color: '#818cf8', border: 'rgba(99,102,241,0.2)', bg: 'rgba(99,102,241,0.07)',
+    id: 'customers', Icon: Users, ...palette[0],
     title: 'Customer Management',
     tagline: 'Every customer, a complete history',
-    desc: 'Full customer profiles with purchase history, style preferences, sales notes and contacts — all in one unified view.',
-    bullets: ['360° customer profile', 'Full order history', 'Advanced tagging & segmentation', 'Communication log'],
+    desc: 'Full customer profiles with purchase history, style preferences, sales notes and contacts - all in one unified view.',
+    bullets: ['360-degree customer profile', 'Full order history', 'Advanced tagging and segmentation', 'Communication log'],
   },
   {
-    id: 'sales', Icon: TrendingUp,
-    color: '#34d399', border: 'rgba(52,211,153,0.2)', bg: 'rgba(52,211,153,0.07)',
+    id: 'sales', Icon: TrendingUp, ...palette[1],
     title: 'Sales Pipeline',
     tagline: 'Guide customers from visit to delivery',
-    desc: 'Visualize every deal in an intuitive kanban board. Move leads through stages: Interest → Contacted → Negotiation → Closed.',
-    bullets: ['Drag & drop kanban', 'Closing probability', 'Automatic reminders', 'Monthly team targets'],
+    desc: 'Visualize every deal in an intuitive kanban board. Move leads through stages from interest to negotiation to closed.',
+    bullets: ['Drag and drop kanban', 'Closing probability', 'Automatic reminders', 'Monthly team targets'],
   },
   {
-    id: 'orders', Icon: FileText,
-    color: '#38bdf8', border: 'rgba(56,189,248,0.2)', bg: 'rgba(56,189,248,0.07)',
-    title: 'Order & Project Management',
+    id: 'orders', Icon: FileText, ...palette[2],
+    title: 'Order and Project Management',
     tagline: 'From first contact to final delivery',
     desc: 'Track every order through its full lifecycle. Assign tasks, monitor status and keep the entire team aligned.',
     bullets: ['Full order lifecycle tracking', 'Task assignment per project', 'Delivery status visibility', 'Team collaboration notes'],
   },
   {
-    id: 'dashboard', Icon: LayoutDashboard,
-    color: '#a78bfa', border: 'rgba(167,139,250,0.2)', bg: 'rgba(167,139,250,0.07)',
+    id: 'dashboard', Icon: LayoutDashboard, ...palette[3],
     title: 'Executive Dashboard',
     tagline: 'A live snapshot of your business',
     desc: 'Critical KPIs at a glance: revenue, trends, conversion rate, salesperson performance and top products.',
     bullets: ['Customizable KPIs', 'Interactive charts', 'Period comparison', 'Exportable reports'],
   },
   {
-    id: 'products', Icon: Package,
-    color: '#fb923c', border: 'rgba(251,146,60,0.2)', bg: 'rgba(251,146,60,0.07)',
+    id: 'products', Icon: Package, ...palette[4],
     title: 'Product Catalog',
     tagline: 'Your smart product catalog',
-    desc: 'Manage your entire furniture catalog with variants, materials, dimensions and prices — linked to orders and projects.',
-    bullets: ['Variants & configurations', 'Price lists per tier', 'Availability & lead time', 'Images & specs'],
+    desc: 'Manage your entire furniture catalog with variants, materials, dimensions and prices linked to orders and projects.',
+    bullets: ['Variants and configurations', 'Price lists per tier', 'Availability and lead time', 'Images and specs'],
   },
   {
-    id: 'notifications', Icon: Bell,
-    color: '#f472b6', border: 'rgba(244,114,182,0.2)', bg: 'rgba(244,114,182,0.07)',
-    title: 'Notifications & Follow-ups',
+    id: 'notifications', Icon: Bell, ...palette[5],
+    title: 'Notifications and Follow-ups',
     tagline: 'No customer ever forgotten',
     desc: 'The system reminds your team when to call a customer back, when a follow-up is overdue, or when an order needs attention.',
     bullets: ['Automatic reminders', 'Overdue follow-up alerts', 'Delayed order warnings', 'Weekly digest for managers'],
@@ -61,9 +64,9 @@ const features = [
 export default function Features() {
   const [activeIdx, setActiveIdx] = useState(0)
   const sectionRef = useRef(null)
-  const titleRef   = useRef(null)
-  const layoutRef  = useRef(null)
-  const active     = features[activeIdx]
+  const titleRef = useRef(null)
+  const layoutRef = useRef(null)
+  const active = features[activeIdx]
 
   useGSAP(() => {
     gsap.fromTo(
@@ -86,32 +89,30 @@ export default function Features() {
 
   return (
     <section ref={sectionRef} id="features" className="relative py-32 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-[#07070b] via-[#0c0c16] to-[#07070b]" />
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-indigo-900/8 rounded-full blur-[160px] pointer-events-none" />
+      <div className="absolute inset-0 luxury-section-bg" />
+      <div className="absolute inset-0 luxury-crystal-walls pointer-events-none" />
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#d4a43a]/6 rounded-full blur-[160px] pointer-events-none" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10">
-        {/* Header */}
         <div ref={titleRef} className="text-center mb-16">
           <div
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-indigo-300 text-sm font-medium mb-7"
-            style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.15)', opacity: 0 }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-[#e8c87a] text-sm font-medium mb-7"
+            style={{ background: 'rgba(212,164,58,0.08)', border: '1px solid rgba(212,164,58,0.18)', opacity: 0 }}
           >
-            <span className="w-2 h-2 rounded-full bg-indigo-400 animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-[#d4a43a] animate-pulse" />
             Features
           </div>
-          <h2 className="text-4xl md:text-[58px] font-black tracking-tight text-white mb-5 leading-[1.08]" style={{ opacity: 0 }}>
+          <h2 className="font-display text-4xl md:text-[58px] font-black tracking-tight text-white mb-5 leading-[1.08]" style={{ opacity: 0 }}>
             Everything you need,
             <br />
-            <span className="text-gradient">nothing you don't</span>
+            <span className="text-gradient">nothing you do not</span>
           </h2>
           <p className="text-white/42 text-lg max-w-xl mx-auto" style={{ opacity: 0 }}>
             Every feature was designed by listening to the real needs of furniture companies.
           </p>
         </div>
 
-        {/* Layout */}
         <div ref={layoutRef} className="grid lg:grid-cols-2 gap-8 items-start" style={{ opacity: 0 }}>
-          {/* Left — feature list */}
           <div className="space-y-2.5">
             {features.map((f, i) => {
               const isActive = activeIdx === i
@@ -175,7 +176,6 @@ export default function Features() {
             })}
           </div>
 
-          {/* Right — sticky preview */}
           <div className="lg:sticky lg:top-24">
             <AnimatePresence mode="wait">
               <motion.div

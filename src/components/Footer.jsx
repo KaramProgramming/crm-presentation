@@ -17,12 +17,14 @@ export default function Footer() {
   }, { scope: footerRef })
 
   return (
-    <footer ref={footerRef} className="relative" style={{ borderTop: '1px solid rgba(255,255,255,0.05)', background: '#040406', opacity: 0 }}>
-      <div className="max-w-7xl mx-auto px-6 md:px-10 py-12">
+    <footer ref={footerRef} className="relative overflow-hidden" style={{ borderTop: '1px solid rgba(255,255,255,0.05)', opacity: 0 }}>
+      <div className="absolute inset-0 luxury-section-bg" />
+      <div className="absolute inset-0 luxury-crystal-walls pointer-events-none" />
+      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 py-12">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           {/* Logo */}
           <a href="#" className="flex items-center gap-2.5 group">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center transition-all duration-300 group-hover:shadow-lg group-hover:shadow-indigo-500/25">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#d4a43a] to-[#8b6508] flex items-center justify-center transition-all duration-300 group-hover:shadow-lg group-hover:shadow-[#d4a43a]/20">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                 <path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z" fill="white" fillOpacity="0.9" />
               </svg>

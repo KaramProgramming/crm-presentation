@@ -79,8 +79,8 @@ function DashboardScreen() {
             <AreaChart data={sparkData} margin={{ top: 2, right: 2, bottom: 0, left: 0 }}>
               <defs>
                 <linearGradient id="demoGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#6366f1" stopOpacity={0.45} />
-                  <stop offset="100%" stopColor="#6366f1" stopOpacity={0} />
+                  <stop offset="0%" stopColor="#d4a43a" stopOpacity={0.45} />
+                  <stop offset="100%" stopColor="#d4a43a" stopOpacity={0} />
                 </linearGradient>
               </defs>
               <XAxis hide />
@@ -90,7 +90,7 @@ function DashboardScreen() {
                 itemStyle={{ color: '#818cf8' }}
                 formatter={v => [`€${v}K`]}
               />
-              <Area type="monotone" dataKey="v" stroke="#6366f1" strokeWidth={2.5} fill="url(#demoGrad)" dot={false} activeDot={{ r: 4, fill: '#818cf8' }} />
+              <Area type="monotone" dataKey="v" stroke="#d4a43a" strokeWidth={2.5} fill="url(#demoGrad)" dot={false} activeDot={{ r: 4, fill: '#e8c87a' }} />
             </AreaChart>
           </ResponsiveContainer>
         </div>
@@ -200,7 +200,7 @@ function CustomerScreen() {
   return (
     <div className="flex flex-col gap-4">
       <div className="rounded-xl p-5 flex items-start gap-4" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}>
-        <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-white font-black text-xl shrink-0" style={{ background: 'linear-gradient(135deg, #6366f1, #a855f7)' }}>VB</div>
+        <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-white font-black text-xl shrink-0" style={{ background: 'linear-gradient(135deg, #d4a43a, #8b6508)' }}>VB</div>
         <div className="flex-1">
           <div className="flex items-center gap-3 flex-wrap mb-0.5">
             <h3 className="text-white font-black text-lg">Villa Bianchi</h3>
@@ -237,7 +237,7 @@ function CustomerScreen() {
               <div key={i} className="flex items-center justify-between py-1.5 border-b border-white/[0.04] last:border-0">
                 <div>
                   <p className="text-white/75 text-xs font-medium">{q.label}</p>
-                  <p className="text-indigo-400 text-xs font-bold mt-0.5">{q.amount}</p>
+                  <p className="text-[#d4a43a] text-xs font-bold mt-0.5">{q.amount}</p>
                 </div>
                 <Badge color={q.color}>{q.status}</Badge>
               </div>
@@ -250,7 +250,7 @@ function CustomerScreen() {
           <div className="space-y-3 relative">
             <div className="absolute left-[7px] top-4 bottom-2 w-px bg-white/[0.06]" />
             {[
-              { Icon: FileText,     color: '#818cf8', bg: 'rgba(99,102,241,0.15)',   text: 'Order #48 confirmed — €48,000', time: 'Today' },
+              { Icon: FileText,     color: '#d4a43a', bg: 'rgba(212,164,58,0.15)',   text: 'Order #48 confirmed — €48,000', time: 'Today' },
               { Icon: Phone,        color: '#34d399', bg: 'rgba(52,211,153,0.15)',   text: 'Call with Marco — full furnishing interest', time: 'Yesterday' },
               { Icon: Mail,         color: '#38bdf8', bg: 'rgba(56,189,248,0.15)',   text: 'Email follow-up sent', time: '3 days ago' },
               { Icon: CheckCircle2, color: '#34d399', bg: 'rgba(52,211,153,0.15)',   text: 'Deal closed — Bedroom Suite · €18,400', time: '2 weeks ago' },
@@ -307,20 +307,21 @@ export default function CRMDemo() {
 
   return (
     <section ref={sectionRef} id="demo" className="relative py-32 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-[#07070b] via-[#0c0c18] to-[#07070b]" />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-indigo-900/10 rounded-full blur-[150px] pointer-events-none" />
+      <div className="absolute inset-0 luxury-section-bg" />
+      <div className="absolute inset-0 luxury-crystal-walls pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-[#d4a43a]/6 rounded-full blur-[150px] pointer-events-none" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10">
         {/* Header */}
         <div ref={titleRef} className="text-center mb-14">
           <div
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-indigo-300 text-sm font-medium mb-7"
-            style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.15)', opacity: 0 }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-[#e8c87a] text-sm font-medium mb-7"
+            style={{ background: 'rgba(212,164,58,0.08)', border: '1px solid rgba(212,164,58,0.18)', opacity: 0 }}
           >
-            <span className="w-2 h-2 rounded-full bg-indigo-400 animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-[#d4a43a] animate-pulse" />
             Live Product Preview
           </div>
-          <h2 className="text-4xl md:text-[58px] font-black tracking-tight text-white mb-5 leading-[1.08]" style={{ opacity: 0 }}>
+          <h2 className="font-display text-4xl md:text-[58px] font-black tracking-tight text-white mb-5 leading-[1.08]" style={{ opacity: 0 }}>
             See exactly what you
             <br />
             <span className="text-gradient">get on day one</span>
@@ -354,7 +355,7 @@ export default function CRMDemo() {
             </div>
             <div className="flex items-center gap-3">
               <Bell size={13} className="text-white/25" />
-              <div className="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold" style={{ background: 'linear-gradient(135deg, #6366f1, #a855f7)' }}>M</div>
+              <div className="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold" style={{ background: 'linear-gradient(135deg, #d4a43a, #8b6508)' }}>M</div>
             </div>
           </div>
 
@@ -368,7 +369,7 @@ export default function CRMDemo() {
                   onClick={() => setActive(tab.id)}
                   className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold whitespace-nowrap transition-all duration-200"
                   style={isActive
-                    ? { background: 'rgba(99,102,241,0.18)', border: '1px solid rgba(99,102,241,0.28)', color: '#a5b4fc' }
+                    ? { background: 'rgba(212,164,58,0.12)', border: '1px solid rgba(212,164,58,0.25)', color: '#e8c87a' }
                     : { color: 'rgba(255,255,255,0.35)', background: 'transparent', border: '1px solid transparent' }
                   }
                 >
@@ -398,14 +399,14 @@ export default function CRMDemo() {
         {/* Brand callout */}
         <div
           className="mt-6 rounded-2xl px-8 py-7 flex flex-col md:flex-row items-center gap-6"
-          style={{ background: 'rgba(99,102,241,0.07)', border: '1px solid rgba(99,102,241,0.18)' }}
+          style={{ background: 'rgba(212,164,58,0.07)', border: '1px solid rgba(212,164,58,0.18)' }}
         >
           <div className="flex gap-1.5 shrink-0">
             {['#a8522a', '#d4a06a', '#f5e6d0', '#2c1810'].map(c => (
               <div key={c} className="w-7 h-7 rounded-lg border border-white/10" style={{ background: c }} />
             ))}
             <div className="w-7 flex items-center justify-center text-white/25">→</div>
-            {['#6366f1', '#818cf8', '#a5b4fc', '#1e1b4b'].map(c => (
+            {['#d4a43a', '#e8c87a', '#fde68a', '#4d3804'].map(c => (
               <div key={c} className="w-7 h-7 rounded-lg border border-white/10" style={{ background: c }} />
             ))}
           </div>
@@ -419,10 +420,10 @@ export default function CRMDemo() {
             </p>
           </div>
           <span
-            className="shrink-0 inline-flex items-center gap-2 px-4 py-2 rounded-xl text-indigo-300 text-sm font-bold"
-            style={{ background: 'rgba(99,102,241,0.15)', border: '1px solid rgba(99,102,241,0.25)' }}
+            className="shrink-0 inline-flex items-center gap-2 px-4 py-2 rounded-xl text-[#e8c87a] text-sm font-bold"
+            style={{ background: 'rgba(212,164,58,0.12)', border: '1px solid rgba(212,164,58,0.25)' }}
           >
-            <span className="w-2 h-2 rounded-full bg-indigo-400 animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-[#d4a43a] animate-pulse" />
             Included in every plan
           </span>
         </div>

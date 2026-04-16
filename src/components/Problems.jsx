@@ -2,46 +2,70 @@ import { useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
-import { FileSpreadsheet, PhoneMissed, Clock, BarChart2, MessageSquareX, Shuffle } from 'lucide-react'
+import { FileSpreadsheet, PhoneMissed, Clock, BarChart2, MessageSquareX, Shuffle, ArrowDown } from 'lucide-react'
 
 gsap.registerPlugin(ScrollTrigger)
 
 const problems = [
   {
-    Icon: FileSpreadsheet, color: '#f87171',
-    bg: 'rgba(239,68,68,0.07)', border: 'rgba(239,68,68,0.14)',
+    Icon: FileSpreadsheet,
+    color: '#c9856a',
+    bg: 'rgba(201,133,106,0.07)',
+    border: 'rgba(201,133,106,0.18)',
     title: 'Scattered data & spreadsheets',
-    desc: "Orders on Excel, customers on paper, projects over WhatsApp. No single unified view of your business.",
+    impact: 'No unified view',
+    stat: '3+ tools per rep',
+    desc: "Orders on Excel, customers on paper, projects over WhatsApp.",
   },
   {
-    Icon: PhoneMissed, color: '#fb923c',
-    bg: 'rgba(251,146,60,0.07)', border: 'rgba(251,146,60,0.14)',
+    Icon: PhoneMissed,
+    color: '#cd7f32',
+    bg: 'rgba(205,127,50,0.07)',
+    border: 'rgba(205,127,50,0.18)',
     title: 'Leads lost in the chaos',
-    desc: 'An interested customer reaches out but gets buried in emails before you can respond — and never comes back.',
+    impact: '~30% never return',
+    stat: '€12K/mo lost',
+    desc: 'Interested customers buried in emails before you respond.',
   },
   {
-    Icon: Clock, color: '#fbbf24',
-    bg: 'rgba(251,191,36,0.07)', border: 'rgba(251,191,36,0.14)',
+    Icon: Clock,
+    color: '#d4a43a',
+    bg: 'rgba(212,164,58,0.07)',
+    border: 'rgba(212,164,58,0.18)',
     title: 'Hours wasted on admin',
-    desc: 'Your team spends hours copying data, re-entering customer info, and searching through old messages.',
+    impact: '~5h/day wasted',
+    stat: '40 min per entry',
+    desc: 'Your team copies data, re-enters info, searches old messages.',
   },
   {
-    Icon: BarChart2, color: '#a78bfa',
-    bg: 'rgba(167,139,250,0.07)', border: 'rgba(167,139,250,0.14)',
+    Icon: BarChart2,
+    color: '#9e8a6e',
+    bg: 'rgba(158,138,110,0.07)',
+    border: 'rgba(158,138,110,0.18)',
     title: 'Zero real analytics',
-    desc: "You don't know which products sell best, which rep performs better, or when your seasonal peaks hit.",
+    impact: 'Flying blind',
+    stat: 'No peak forecasting',
+    desc: "You don't know which products sell best or when peaks hit.",
   },
   {
-    Icon: MessageSquareX, color: '#f472b6',
-    bg: 'rgba(244,114,182,0.07)', border: 'rgba(244,114,182,0.14)',
+    Icon: MessageSquareX,
+    color: '#b89080',
+    bg: 'rgba(184,144,128,0.07)',
+    border: 'rgba(184,144,128,0.18)',
     title: 'Fragmented communication',
-    desc: 'Sales reps don\'t know what the installer said. Customers get different answers from different people.',
+    impact: 'Mixed messages',
+    stat: 'Customers repeat themselves',
+    desc: 'Reps and installers don\'t talk. Customers get different answers.',
   },
   {
-    Icon: Shuffle, color: '#34d399',
-    bg: 'rgba(52,211,153,0.07)', border: 'rgba(52,211,153,0.14)',
+    Icon: Shuffle,
+    color: '#8a9e7a',
+    bg: 'rgba(138,158,122,0.07)',
+    border: 'rgba(138,158,122,0.18)',
     title: 'No standardized process',
-    desc: "Every salesperson works their own way. There's no shared workflow from first contact to delivery.",
+    impact: 'Every rep, own rules',
+    stat: 'No repeatable workflow',
+    desc: "No shared process from first contact to delivery.",
   },
 ]
 
@@ -62,9 +86,9 @@ export default function Problems() {
 
     gsap.fromTo(
       gridRef.current.querySelectorAll('.problem-card'),
-      { y: 56, opacity: 0 },
+      { y: 40, opacity: 0, scale: 0.97 },
       {
-        y: 0, opacity: 1, duration: 0.75, stagger: 0.09, ease: 'power3.out',
+        y: 0, opacity: 1, scale: 1, duration: 0.65, stagger: 0.08, ease: 'power3.out',
         scrollTrigger: { trigger: gridRef.current, start: 'top 82%' },
       }
     )
@@ -72,22 +96,23 @@ export default function Problems() {
 
   return (
     <section ref={sectionRef} id="problems" className="relative py-32 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-[#07070b] via-[#0c0c14] to-[#07070b]" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[380px] bg-red-900/6 rounded-full blur-[150px] pointer-events-none" />
+      <div className="absolute inset-0 luxury-section-bg" />
+      <div className="absolute inset-0 luxury-crystal-walls pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[380px] bg-red-900/4 rounded-full blur-[150px] pointer-events-none" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10">
         {/* Header */}
-        <div ref={titleRef} className="text-center mb-20">
+        <div ref={titleRef} className="text-center mb-16">
           <div
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-red-300 text-sm font-medium mb-7"
-            style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.15)', opacity: 0 }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-[#c9856a] text-sm font-medium mb-7"
+            style={{ background: 'rgba(201,133,106,0.08)', border: '1px solid rgba(201,133,106,0.18)', opacity: 0 }}
           >
-            <span className="w-2 h-2 rounded-full bg-red-400" />
+            <span className="w-2 h-2 rounded-full bg-[#c9856a]" />
             The Problem Today
           </div>
 
           <h2
-            className="text-4xl md:text-5xl lg:text-[58px] font-black tracking-tight text-white mb-5 leading-[1.08]"
+            className="font-display text-4xl md:text-5xl lg:text-[58px] font-black tracking-tight text-white mb-5 leading-[1.08]"
             style={{ opacity: 0 }}
           >
             The furniture industry deserves
@@ -100,31 +125,60 @@ export default function Problems() {
           </p>
         </div>
 
-        {/* Grid */}
-        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {/* Compact problem cards — 2 columns on mobile, 3 on desktop */}
+        <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {problems.map((p) => (
             <div
               key={p.title}
-              className="problem-card group relative rounded-2xl p-6 cursor-default shine"
+              className="problem-card group relative rounded-2xl p-4 cursor-default shine transition-all duration-300 hover:-translate-y-1"
               style={{ opacity: 0, background: p.bg, border: `1px solid ${p.border}` }}
             >
-              <div
-                className="w-11 h-11 rounded-xl flex items-center justify-center mb-5 transition-transform duration-300 group-hover:scale-110"
-                style={{ background: p.bg, border: `1px solid ${p.border}` }}
-              >
-                <p.Icon size={20} style={{ color: p.color }} />
+              <div className="flex items-start gap-3">
+                {/* Icon */}
+                <div
+                  className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 mt-0.5 transition-transform duration-300 group-hover:scale-110"
+                  style={{ background: p.bg, border: `1px solid ${p.border}` }}
+                >
+                  <p.Icon size={16} style={{ color: p.color }} />
+                </div>
+
+                {/* Content */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-start justify-between gap-2 mb-1.5">
+                    <h3 className="text-white font-bold text-[13px] leading-snug">{p.title}</h3>
+                  </div>
+
+                  {/* Impact pills */}
+                  <div className="flex flex-wrap gap-1.5 mb-2">
+                    <span
+                      className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold"
+                      style={{ color: p.color, background: p.bg, border: `1px solid ${p.border}` }}
+                    >
+                      {p.impact}
+                    </span>
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium text-white/40 bg-white/[0.04] border border-white/[0.07]">
+                      {p.stat}
+                    </span>
+                  </div>
+
+                  {/* Description — small, muted */}
+                  <p className="text-white/35 text-[11px] leading-relaxed">{p.desc}</p>
+                </div>
               </div>
-              <h3 className="text-white font-bold text-[15px] mb-2.5">{p.title}</h3>
-              <p className="text-white/42 text-sm leading-relaxed">{p.desc}</p>
             </div>
           ))}
         </div>
 
-        <div className="mt-16 text-center">
-          <p className="text-white/22 text-sm">
+        {/* Bottom hook with arrow pointing to bridge */}
+        <div className="mt-14 text-center">
+          <p className="text-white/28 text-sm mb-4">
             Recognize at least{' '}
-            <span className="text-white/55 font-semibold">3 of these</span>? Your company is losing revenue every day.
+            <span className="text-white/60 font-semibold">3 of these</span>? Your company is losing revenue every day.
           </p>
+          <div className="flex flex-col items-center gap-2 text-[#d4a43a]/60">
+            <span className="text-xs font-medium tracking-widest uppercase">See the solution</span>
+            <ArrowDown size={16} className="animate-bounce" />
+          </div>
         </div>
       </div>
     </section>
