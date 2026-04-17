@@ -249,6 +249,89 @@
     opacity: 0.7;
     filter: blur(0.3px);
   }
+
+  /* Pure gold text gradient */
+  .text-gradient-gold {
+    background: linear-gradient(135deg, #f0d078 0%, #d4a43a 40%, #8b6508 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Giant luxury stat number */
+  .luxury-stat-num {
+    font-family: 'Cormorant Garant', Georgia, serif;
+    font-weight: 700;
+    line-height: 0.88;
+    letter-spacing: -0.04em;
+  }
+
+  /* Thin horizontal gold divider */
+  .divider-gold {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(212,164,58,0.35) 30%, rgba(212,164,58,0.35) 70%, transparent);
+  }
+
+  /* Thin vertical gold rule */
+  .rule-gold-v {
+    width: 1px;
+    background: linear-gradient(180deg, transparent, rgba(212,164,58,0.45) 30%, rgba(212,164,58,0.45) 70%, transparent);
+  }
+
+  /* Section label — premium uppercase badge style */
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border-radius: 9999px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  /* Premium card — heavier than .card */
+  .luxury-card {
+    background: rgba(255, 248, 235, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    transition: border-color 0.4s ease, background 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
+  }
+  .luxury-card:hover {
+    border-color: rgba(212, 164, 58, 0.22);
+    background: rgba(255, 248, 235, 0.05);
+    box-shadow: 0 28px 60px rgba(0,0,0,0.38), 0 0 40px rgba(212,164,58,0.06);
+    transform: translateY(-4px);
+  }
+
+  /* Ghost/watermark large decorative text */
+  .ghost-text {
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255,255,255,0.04);
+    user-select: none;
+    pointer-events: none;
+  }
+
+  /* Gradient border card wrapper */
+  .gradient-border-card {
+    position: relative;
+    border-radius: 24px;
+    background: rgba(255,248,235,0.025);
+  }
+  .gradient-border-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 24px;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(212,164,58,0.5) 0%, rgba(255,255,255,0.06) 35%, rgba(212,164,58,0.08) 65%, rgba(212,164,58,0.35) 100%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
 }
 
 /* Scrollbar */

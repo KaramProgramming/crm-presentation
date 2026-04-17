@@ -43,14 +43,11 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-6 md:px-10 h-16 flex items-center justify-between">
         {/* Logo */}
         <a href="#" className="flex items-center gap-2.5 group">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#d4a43a] to-[#8b6508] flex items-center justify-center transition-all duration-300 group-hover:shadow-lg group-hover:shadow-[#d4a43a]/25 group-hover:scale-105">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <div className="w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:shadow-lg group-hover:shadow-[#d4a43a]/25 group-hover:scale-105" style={{ background: 'linear-gradient(135deg, #d4a43a 0%, #8b6508 100%)' }}>
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
               <path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z" fill="white" fillOpacity="0.92" />
             </svg>
           </div>
-          <span className="text-white font-black text-lg tracking-tight">
-            Furni<span className="text-gradient">CRM</span>
-          </span>
         </a>
 
         {/* Desktop links */}
@@ -71,8 +68,11 @@ export default function Navbar() {
         <div className="hidden md:block">
           <a
             href="#cta"
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#b8860b] hover:bg-[#d4a43a] text-white text-sm font-semibold rounded-xl transition-all duration-200"
-            style={{ boxShadow: '0 4px 16px rgba(184,115,51,0.3)' }}
+            className="inline-flex items-center gap-2 px-5 py-2.5 text-[#1a1008] text-sm font-bold rounded-xl transition-all duration-300 hover:scale-105"
+            style={{
+              background: 'linear-gradient(135deg, #f0d078 0%, #d4a43a 50%, #a07820 100%)',
+              boxShadow: '0 4px 20px rgba(212,164,58,0.32)',
+            }}
           >
             Request Demo
           </a>

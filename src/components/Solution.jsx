@@ -116,7 +116,7 @@ export default function Solution() {
           {solutions.map((item) => (
             <div
               key={item.solution}
-              className="solution-card group relative glass shine rounded-2xl p-7 transition-all duration-300 hover:-translate-y-1"
+              className="solution-card group relative glass shine rounded-2xl p-7 transition-all duration-350 hover:-translate-y-2 hover:shadow-2xl"
               style={{ opacity: 0, border: `1px solid ${item.border}` }}
             >
               <div className="flex items-center gap-2 mb-4">
@@ -129,7 +129,7 @@ export default function Solution() {
                 </span>
               </div>
 
-              <h3 className="text-xl md:text-2xl font-black text-white tracking-tight mb-2 leading-tight">
+              <h3 className="font-display text-xl md:text-2xl font-black text-white tracking-tight mb-2 leading-tight">
                 {item.solution}
               </h3>
 

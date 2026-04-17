@@ -34,12 +34,12 @@ const flows = [
 ]
 
 const integrations = [
-  { name: 'n8n', desc: 'Workflow automation', icon: '//' },
-  { name: 'Email', desc: 'Gmail / Outlook', icon: '@' },
-  { name: 'WhatsApp', desc: 'Direct messaging', icon: 'WA' },
-  { name: 'Zapier', desc: 'SaaS connections', icon: 'ZP' },
-  { name: 'Sheets', desc: 'Data export', icon: 'GS' },
-  { name: 'Webhooks', desc: 'Custom API', icon: '</>' },
+  { name: 'n8n', desc: 'Workflow automation', icon: '⚙', color: 'rgba(232,180,80,0.18)', border: 'rgba(232,180,80,0.22)' },
+  { name: 'Email', desc: 'Gmail / Outlook', icon: '✉', color: 'rgba(66,133,244,0.14)', border: 'rgba(66,133,244,0.2)' },
+  { name: 'WhatsApp', desc: 'Direct messaging', icon: '💬', color: 'rgba(37,211,102,0.14)', border: 'rgba(37,211,102,0.2)' },
+  { name: 'Zapier', desc: 'SaaS connections', icon: '⚡', color: 'rgba(255,74,51,0.14)', border: 'rgba(255,74,51,0.2)' },
+  { name: 'Sheets', desc: 'Data export', icon: '📊', color: 'rgba(52,168,83,0.14)', border: 'rgba(52,168,83,0.2)' },
+  { name: 'Webhooks', desc: 'Custom API', icon: '🔗', color: 'rgba(212,164,58,0.14)', border: 'rgba(212,164,58,0.2)' },
 ]
 
 export default function Automation() {
@@ -147,12 +147,12 @@ export default function Automation() {
             {integrations.map((int) => (
               <div
                 key={int.name}
-                className="int-card group rounded-2xl p-5 text-center cursor-default shine transition-all duration-300 hover:-translate-y-1.5"
-                style={{ opacity: 0, background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.06)' }}
+                className="int-card group rounded-2xl p-5 text-center cursor-default shine transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
+                style={{ opacity: 0, background: int.color, border: `1px solid ${int.border}` }}
               >
-                <div className="text-xl font-black text-[#e8c87a] mb-2">{int.icon}</div>
+                <div className="text-2xl mb-2.5">{int.icon}</div>
                 <p className="text-white font-bold text-sm">{int.name}</p>
-                <p className="text-white/35 text-xs mt-0.5">{int.desc}</p>
+                <p className="text-white/38 text-xs mt-0.5">{int.desc}</p>
               </div>
             ))}
           </div>

@@ -351,7 +351,7 @@ export default function CRMDemo() {
             </div>
             <div className="flex items-center gap-2 px-4 py-1.5 rounded-lg" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}>
               <span className="w-2 h-2 rounded-full bg-emerald-400" />
-              <span className="text-white/35 text-xs font-mono">furnicrm.app</span>
+              <span className="text-white/35 text-xs font-mono">yourcrm.app</span>
             </div>
             <div className="flex items-center gap-3">
               <Bell size={13} className="text-white/25" />

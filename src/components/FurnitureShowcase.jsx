@@ -92,7 +92,7 @@ export default function FurnitureShowcase() {
           <p className="text-white/25 text-xs font-semibold uppercase tracking-[0.3em] mb-4" style={{ opacity: 0 }}>
             The spaces your clients dream of
           </p>
-          <h2 className="text-4xl md:text-6xl font-black tracking-tight text-white mb-4 leading-tight" style={{ opacity: 0 }}>
+          <h2 className="font-display text-4xl md:text-6xl font-black tracking-tight text-white mb-4 leading-[1.04]" style={{ opacity: 0 }}>
             Built for brands that{' '}
             <span className="text-gradient">inspire</span>
           </h2>

@@ -61,19 +61,25 @@ const EXPLODED = [
 
 const CIRCLE_SIZE = 288
 const HALF_SIZE = CIRCLE_SIZE / 2
-const RESPONSIVE_SPRING = { stiffness: 220, damping: 28, mass: 0.56 }
+// Softer spring = smoother, less snappy feel on scroll
+const RESPONSIVE_SPRING = { stiffness: 120, damping: 22, mass: 0.8 }
 
 function StepBubble({ step, index, progress }) {
-  const stagger = index * 0.026
-  const xRaw = useTransform(progress, [0, 0.01 + stagger, 0.09 + stagger, 1], [CLUSTER[index].x, CLUSTER[index].x, EXPLODED[index].x, EXPLODED[index].x])
-  const yBase = useTransform(progress, [0, 0.01 + stagger, 0.09 + stagger, 1], [CLUSTER[index].y, CLUSTER[index].y, EXPLODED[index].y, EXPLODED[index].y])
+  // Spread animation: each bubble starts moving at ~8% and finishes at ~42% scroll progress
+  // With 280vh section height → 180vh scrollable → full explosion after ~76vh of scrolling
+  const stagger = index * 0.04
+  const moveStart = 0.06 + stagger
+  const moveEnd   = 0.38 + stagger
+
+  const xRaw = useTransform(progress, [0, moveStart, moveEnd, 1], [CLUSTER[index].x, CLUSTER[index].x, EXPLODED[index].x, EXPLODED[index].x])
+  const yBase = useTransform(progress, [0, moveStart, moveEnd, 1], [CLUSTER[index].y, CLUSTER[index].y, EXPLODED[index].y, EXPLODED[index].y])
   const parallax = useTransform(progress, [0, 1], [index % 2 === 0 ? -10 : 10, index % 2 === 0 ? 14 : -14])
   const yRaw = useTransform([yBase, parallax], ([base, drift]) => base + drift)
-  const scaleRaw = useTransform(progress, [0, 0.02 + stagger, 0.07 + stagger, 0.11 + stagger], [0.62, 0.84, EXPLODED[index].depth + 0.05, EXPLODED[index].depth])
-  const opacity = useTransform(progress, [0, 0.025, 0.1], [0.76, 1, 1])
-  const rotateX = useTransform(progress, [0, 0.09 + stagger], [0, EXPLODED[index].tiltX])
-  const rotateY = useTransform(progress, [0, 0.09 + stagger], [0, EXPLODED[index].tiltY])
-  const shadowStrength = useTransform(progress, [0, 0.09 + stagger], [0.18, 0.34])
+  const scaleRaw = useTransform(progress, [0, moveStart, moveEnd * 0.7, moveEnd + 0.04], [0.62, 0.78, EXPLODED[index].depth + 0.05, EXPLODED[index].depth])
+  const opacity = useTransform(progress, [0, 0.06, 0.14], [0.72, 1, 1])
+  const rotateX = useTransform(progress, [0, moveEnd], [0, EXPLODED[index].tiltX])
+  const rotateY = useTransform(progress, [0, moveEnd], [0, EXPLODED[index].tiltY])
+  const shadowStrength = useTransform(progress, [0, moveEnd], [0.18, 0.34])
   const boxShadow = useTransform(shadowStrength, (value) => `0 24px 68px rgba(0,0,0,${value}), 0 0 48px ${step.glow}`)
 
   const x = useSpring(xRaw, RESPONSIVE_SPRING)
@@ -136,11 +142,11 @@ export default function CustomDev() {
     offset: ['start start', 'end end'],
   })
 
-  const hintOpacity = useTransform(scrollYProgress, [0, 0.028], [1, 0])
+  const hintOpacity = useTransform(scrollYProgress, [0, 0.07], [1, 0])
   const stageY = useTransform(scrollYProgress, [0, 1], [8, -8])
 
   return (
-    <section ref={sectionRef} id="custom" className="relative h-[118vh]">
+    <section ref={sectionRef} id="custom" className="relative h-[280vh]">
       <div className="sticky top-0 h-screen overflow-hidden">
         <div className="absolute inset-0 luxury-section-bg" />
         <div className="absolute inset-0 luxury-crystal-walls pointer-events-none" />

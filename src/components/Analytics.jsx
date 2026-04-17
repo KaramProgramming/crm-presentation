@@ -104,12 +104,20 @@ export default function Analytics() {
           {kpis.map(kpi => (
             <div
               key={kpi.label}
-              className="kpi-card group rounded-2xl p-5 shine transition-transform duration-300 hover:-translate-y-1"
+              className="kpi-card group rounded-2xl p-5 shine overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl relative"
               style={{ opacity: 0, background: kpi.bg, border: `1px solid ${kpi.border}` }}
             >
-              <p className="text-white/38 text-xs font-medium mb-2">{kpi.label}</p>
-              <p className="text-white font-black text-2xl tracking-tight">{kpi.value}</p>
-              <p className="text-sm font-semibold mt-1.5" style={{ color: kpi.color }}>{kpi.delta} vs last year</p>
+              {/* Subtle glow blob */}
+              <div
+                className="absolute -bottom-4 -right-4 w-20 h-20 rounded-full blur-2xl opacity-30 pointer-events-none"
+                style={{ background: kpi.color }}
+              />
+              <p className="relative text-white/36 text-[11px] font-medium uppercase tracking-wider mb-3">{kpi.label}</p>
+              <p className="relative text-white font-black text-2xl tracking-tight mb-1">{kpi.value}</p>
+              <div className="relative flex items-center gap-1.5">
+                <span className="text-sm font-bold" style={{ color: kpi.color }}>{kpi.delta}</span>
+                <span className="text-white/28 text-xs">vs last year</span>
+              </div>
             </div>
           ))}
         </div>

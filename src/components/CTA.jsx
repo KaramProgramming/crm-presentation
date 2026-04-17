@@ -188,13 +188,12 @@ export default function CTA() {
             </div>
 
             <h2
-              className="font-display text-4xl md:text-[52px] font-black tracking-tight text-white mb-6 leading-[1.08]"
-              style={{ opacity: 0 }}
+              className="font-display font-black tracking-tight text-white mb-6 leading-[1.04]"
+              style={{ fontSize: 'clamp(36px, 5vw, 56px)', opacity: 0 }}
             >
               Transform your business
               <br />
-              with{' '}
-              <span className="text-gradient">FurniCRM</span>
+              <span className="text-gradient">starting today</span>
             </h2>
 
             <p className="text-white/45 text-lg leading-relaxed mb-10" style={{ opacity: 0 }}>
@@ -216,7 +215,7 @@ export default function CTA() {
             <div className="space-y-3" style={{ opacity: 0 }}>
               {[
                 { Icon: Phone, text: '+39 xxx xxx xxxx', label: 'Call us directly' },
-                { Icon: Mail,  text: 'demo@furnicrm.com', label: 'Send an email' },
+                { Icon: Mail,  text: 'demo@yourcrm.com', label: 'Send an email' },
                 { Icon: MapPin, text: 'Available globally', label: 'Remote & on-site demos' },
               ].map(({ Icon, text, label }) => (
                 <div key={label} className="flex items-center gap-3">
@@ -238,12 +237,10 @@ export default function CTA() {
           {/* Right — form */}
           <div
             ref={formRef}
-            className="rounded-3xl p-8 shine"
+            className="gradient-border-card p-8"
             style={{
               opacity: 0,
-              background: 'rgba(255,255,255,0.025)',
-              border: '1px solid rgba(255,255,255,0.08)',
-              boxShadow: '0 32px 80px rgba(0,0,0,0.4)',
+              boxShadow: '0 40px 100px rgba(0,0,0,0.5), 0 0 60px rgba(212,164,58,0.05)',
             }}
           >
             {submitted ? (
