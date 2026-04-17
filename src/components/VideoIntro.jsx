@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import scrollIntroVideo from '../../Generated video 1.mp4'
+import scrollIntroVideo from '../../Crm video.mp4'
 
 const TARGET_DURATION_SECONDS = 4.8
 
