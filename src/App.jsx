@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 
 import VideoIntro from './components/VideoIntro'
+import PitchVideo from './components/PitchVideo'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import FurnitureShowcase from './components/FurnitureShowcase'
@@ -219,6 +220,7 @@ export default function App() {
       <div ref={cursorRef} className="cursor-glow" aria-hidden="true" />
 
       <VideoIntro />
+      <PitchVideo />
       <Navbar />
 
       <main className="relative z-10">

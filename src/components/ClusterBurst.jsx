@@ -53,19 +53,19 @@ const SPRING = { stiffness: 68, damping: 19, mass: 0.65 }
 // ─── Single animated circle ───────────────────────────────────────────────────
 
 function BurstCircle({ circle, index, progress }) {
-  const d = index * 0.024   // per-circle stagger offset in scroll-progress space
+  const d = index * 0.012   // per-circle stagger offset in scroll-progress space
 
-  // Keyframe: cluster → explode (hold) → grid
-  const kIn  = [0,            0.27 + d, 0.45 + d, 0.97]
+  // Keyframe: cluster (instant) → explode → hold → grid
+  const kIn  = [0,            0.06 + d, 0.20 + d, 0.97]
   const kOut = [CLUSTER[index].x, EXPLODE[index].x, EXPLODE[index].x, GRID[index].x]
   const kY   = [CLUSTER[index].y, EXPLODE[index].y, EXPLODE[index].y, GRID[index].y]
 
   const rawX  = useTransform(progress, kIn, kOut)
   const rawY  = useTransform(progress, kIn, kY)
   const scale = useTransform(progress,
-    [0, 0.10, 0.28 + d, 0.50 + d, 0.97],
-    [0.72, 0.88, 1.12,  1.0,       1.0])
-  const opacity = useTransform(progress, [0, 0.04, 0.90, 0.97], [0.55, 1, 1, 1])
+    [0, 0.02, 0.08 + d, 0.22 + d, 0.97],
+    [0.0, 0.72, 1.15,   1.0,       1.0])
+  const opacity = useTransform(progress, [0, 0.01, 0.85, 0.97], [0, 1, 1, 1])
 
   const x = useSpring(rawX, SPRING)
   const y = useSpring(rawY, SPRING)
