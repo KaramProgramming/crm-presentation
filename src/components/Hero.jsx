@@ -215,24 +215,25 @@ export default function Hero() {
           src={showroomImage}
           alt=""
           className="h-full w-full object-cover object-center"
+          style={{ filter: 'brightness(0.78) saturate(0.92)' }}
         />
       </div>
 
       <div
         className="absolute inset-0"
-        style={{ background: 'linear-gradient(100deg, rgba(5, 5, 5, 0.92) 0%, rgba(8, 8, 8, 0.78) 34%, rgba(10, 8, 7, 0.48) 100%)' }}
+        style={{ background: 'linear-gradient(100deg, rgba(4, 4, 4, 0.68) 0%, rgba(6, 6, 6, 0.44) 36%, rgba(8, 7, 5, 0.18) 100%)' }}
       />
       <div
         className="absolute inset-0"
-        style={{ background: 'radial-gradient(ellipse 118% 84% at 18% 48%, rgba(6, 6, 6, 0.92) 0%, rgba(8, 7, 6, 0.56) 42%, transparent 68%)' }}
+        style={{ background: 'radial-gradient(ellipse 108% 78% at 16% 50%, rgba(4, 4, 4, 0.72) 0%, rgba(6, 5, 4, 0.38) 44%, transparent 68%)' }}
       />
       <div
         className="absolute inset-x-0 bottom-0 h-64"
-        style={{ background: 'linear-gradient(to top, rgba(4, 4, 4, 0.92), transparent)' }}
+        style={{ background: 'linear-gradient(to top, rgba(3, 3, 3, 0.82), transparent)' }}
       />
       <div
         className="absolute inset-x-0 top-0 h-36"
-        style={{ background: 'linear-gradient(to bottom, rgba(4, 4, 4, 0.88), transparent)' }}
+        style={{ background: 'linear-gradient(to bottom, rgba(3, 3, 3, 0.72), transparent)' }}
       />
 
       <div
@@ -377,7 +378,7 @@ export default function Hero() {
                 alt="Premium furniture showroom"
                 className="h-full w-full object-cover object-center"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#120b06] via-[#120b06]/38 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0705] via-[#0a0705]/28 to-transparent" />
               <div className="absolute left-5 top-5">
                 <span
                   className="inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/78"
